@@ -1,0 +1,28 @@
+name: Basic Checks
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Quick Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Check JavaScript syntax
+        run: |
+          echo "Checking JavaScript files for syntax errors..."
+          for jsfile in scripts/*.js; do
+            node --check "$jsfile" || exit 1
+          done
+          echo "✓ All JavaScript files are valid!"
