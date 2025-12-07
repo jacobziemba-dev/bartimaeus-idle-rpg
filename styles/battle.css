@@ -1,0 +1,94 @@
+/* ========================================
+   Battle Canvas Specific Styles
+   ======================================== */
+
+/*
+   This file contains styles specific to battle animations
+   and visual effects that complement the canvas rendering
+*/
+
+/* Canvas container effects */
+#battle-container {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Victory/Defeat overlay styles (will be added via JS) */
+.battle-result-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px 60px;
+    border-radius: 16px;
+    border: 3px solid;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    animation: popIn 0.5s ease-out;
+    z-index: 100;
+}
+
+.battle-result-overlay.victory {
+    border-color: #10b981;
+    color: #10b981;
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
+}
+
+.battle-result-overlay.defeat {
+    border-color: #ef4444;
+    color: #ef4444;
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+}
+
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Loading indicator (for future use) */
+.battle-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #a78bfa;
+}
+
+.battle-loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/*
+   Note: Most battle visuals (heroes, enemies, health bars, damage numbers)
+   are drawn directly on the canvas using JavaScript in ui.js
+   These CSS styles are for HTML overlays and effects only
+*/
