@@ -21,6 +21,16 @@ A simplified AFK Arena-style idle RPG game with auto-battling heroes, idle resou
    - Right-click `index.html` → "Open with Live Server"
    - Auto-refreshes when you make changes
 
+## 🔄 Development Workflow
+
+This project uses a **simple workflow** for solo development:
+
+- **Main branch**: Work directly on `main` for most changes
+- **Auto-deploy**: Pushes to `main` automatically deploy to GitHub Pages
+- **Optional branches**: Create feature branches only when experimenting
+
+See [WORKFLOW.md](WORKFLOW.md) for details and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
 ## 🌐 Deploy to GitHub Pages
 
 ### Step 1: Create GitHub Repository
