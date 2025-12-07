@@ -22,7 +22,14 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           echo "Checking JavaScript files for syntax errors..."
-          for jsfile in scripts/*.js; do
+          shopt -s nullglob
+          files=(scripts/*.js)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "Warning: No JavaScript files found in scripts directory"
+            exit 1
+          fi
+          for jsfile in "${files[@]}"; do
+            echo "Checking $jsfile..."
             node --check "$jsfile" || exit 1
           done
           echo "✓ All JavaScript files are valid!"

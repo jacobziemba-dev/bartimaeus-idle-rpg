@@ -64,7 +64,10 @@ git checkout main
 # ... make changes ...
 
 # If it breaks, restore from backup
-git reset --hard backup
+git stash  # Save any uncommitted work
+git checkout backup  # Switch to backup
+git checkout -b main-new  # Create new main from backup
+# Or merge backup into main
 ```
 
 That's all you need! Keep it simple.
