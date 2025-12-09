@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a vanilla JavaScript HTML5 Canvas game with no build step required.
 
 **Development:**
-- Simply open [index.html](index.html) in a browser, or
+- Simply open [index.html](../index.html) in a browser, or
 - Use VS Code's Live Server extension for auto-refresh during development
 
 **Console Debugging:**
@@ -22,17 +22,17 @@ game.storageManager.deleteSave()  // Reset save
 ## Architecture Overview
 
 ### Script Loading Order (CRITICAL)
-Scripts must load in this exact order in [index.html](index.html) due to class dependencies:
-1. [hero.js](scripts/hero.js) - `Hero` class and `createStartingHeroes()`
-2. [enemy.js](scripts/enemy.js) - `Enemy` class and enemy generation functions
-3. [resources.js](scripts/resources.js) - `ResourceManager` singleton
-4. [storage.js](scripts/storage.js) - `StorageManager` and save/load utilities
-5. [battle.js](scripts/battle.js) - `BattleManager` (depends on Hero/Enemy)
-6. [ui.js](scripts/ui.js) - `UIManager` (depends on Hero/Enemy)
-7. [game.js](scripts/game.js) - `Game` controller (depends on all above)
+Scripts must load in this exact order in [index.html](../index.html) due to class dependencies:
+1. [hero.js](../src/scripts/hero.js) - `Hero` class and `createStartingHeroes()`
+2. [enemy.js](../src/scripts/enemy.js) - `Enemy` class and enemy generation functions
+3. [resources.js](../src/scripts/resources.js) - `ResourceManager` singleton
+4. [storage.js](../src/scripts/storage.js) - `StorageManager` and save/load utilities
+5. [battle.js](../src/scripts/battle.js) - `BattleManager` (depends on Hero/Enemy)
+6. [ui.js](../src/scripts/ui.js) - `UIManager` (depends on Hero/Enemy)
+7. [game.js](../src/scripts/game.js) - `Game` controller (depends on all above)
 
 ### Core Game Loop
-The game runs at 60 FPS using `requestAnimationFrame()` in [game.js:169](scripts/game.js#L169):
+The game runs at 60 FPS using `requestAnimationFrame()` in [game.js:169](../src/scripts/game.js#L169):
 ```
 gameLoop() → update(deltaTime) → render()
 ```
@@ -48,7 +48,7 @@ gameLoop() → update(deltaTime) → render()
 - `drawBattleResult()` - Show victory/defeat overlay on canvas
 
 ### Manager Pattern
-The game uses a manager-based architecture where [game.js](scripts/game.js) orchestrates four managers:
+The game uses a manager-based architecture where [game.js](../src/scripts/game.js) orchestrates four managers:
 - **BattleManager** - Combat logic, attack timing, win/loss detection
 - **ResourceManager** - Gold/gems, idle generation, AFK rewards calculation
 - **StorageManager** - LocalStorage save/load operations
@@ -88,7 +88,7 @@ The canvas is fixed at 800×400 pixels. Character positions are hardcoded:
 - Heroes: x=100, y=[100, 200, 300]
 - Enemies: x=600, y=[100, 200, 300]
 
-Battle results (victory/defeat) are drawn as canvas overlays with `drawBattleResult()` in [ui.js:253](scripts/ui.js#L253).
+Battle results (victory/defeat) are drawn as canvas overlays with `drawBattleResult()` in [ui.js:253](../src/scripts/ui.js#L253).
 
 ## Key Formulas
 
@@ -108,20 +108,20 @@ Battle results (victory/defeat) are drawn as canvas overlays with `drawBattleRes
 ## Common Modifications
 
 **Adding a new hero:**
-Edit `createStartingHeroes()` in [hero.js:210](scripts/hero.js#L210). Add to `yPositions` array in [ui.js:32](scripts/ui.js#L32) if more than 3 heroes.
+Edit `createStartingHeroes()` in [hero.js:210](../src/scripts/hero.js#L210). Add to `yPositions` array in [ui.js:32](../src/scripts/ui.js#L32) if more than 3 heroes.
 
 **Changing battle speed:**
-Modify `attackInterval` (default 1000ms) in [battle.js:23](scripts/battle.js#L23).
+Modify `attackInterval` (default 1000ms) in [battle.js:23](../src/scripts/battle.js#L23).
 
 **Adjusting difficulty:**
-Edit enemy scaling multipliers in `createEnemiesForStage()` in [enemy.js:103](scripts/enemy.js#L103).
+Edit enemy scaling multipliers in `createEnemiesForStage()` in [enemy.js:103](../src/scripts/enemy.js#L103).
 
 **Canvas size changes:**
-Update `<canvas width="800" height="400">` in [index.html:31](index.html#L31) and adjust character positions in [ui.js](scripts/ui.js) constructor.
+Update `<canvas width="800" height="400">` in [index.html:31](../index.html#L31) and adjust character positions in [ui.js](../src/scripts/ui.js) constructor.
 
 ## Modal System
 All modals use the `.modal` class with `display: flex` when visible, `display: none` when hidden. Modals include:
 - `#upgrade-modal` - Hero upgrade panel
 - `#afk-modal` - AFK rewards popup
 
-Control visibility via `style.display` in JavaScript (see [ui.js:340-356](scripts/ui.js#L340-L356)).
+Control visibility via `style.display` in JavaScript (see [ui.js:340-356](../src/scripts/ui.js#L340-L356)).
