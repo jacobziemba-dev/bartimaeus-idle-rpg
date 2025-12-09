@@ -63,334 +63,325 @@ Each step is small and doable. Complete one before moving to the next!
 
 ## STEP 1: Make Battle More Fun (Week 1)
 
-### What You'll Build
-Speed controls so battles aren't boring
+### Goal
+Add clickable speed controls so battles run at 1x, 2x, and 4x.
 
-### Files You'll Edit
-- `scripts/battle.js`
-- `index.html`
-- `scripts/game.js`
+### Files to edit
+- `index.html` — add buttons to the UI
+- `scripts/battle.js` — use a multiplier on the attack timer
+- `scripts/ui.js` or `scripts/game.js` — wire button events
 
-### What To Do
-1. Add speed buttons (1x, 2x, 4x) to the HTML
-2. Change `attackInterval` in battle.js when buttons are clicked
-3. Test: Click 4x, battles should go faster!
+### Step-by-step
+1. Open `index.html` and locate the top-bar or controls area. Add:
 
-### How To Test
-- Start a battle
-- Click each speed button
-- Watch attacks happen faster/slower
+```html
+<div id="speed-controls">
+  <button data-speed="1">1x</button>
+  <button data-speed="2">2x</button>
+  <button data-speed="4">4x</button>
+</div>
+```
 
-### Success = Battles have working speed controls
+2. In `scripts/game.js` or `scripts/ui.js`, add an event listener to the `#speed-controls` container that reads `data-speed` and stores it on the global `game` object: `game.speedMultiplier = Number(speed)`.
+
+3. In `scripts/battle.js` where the battle loop/timer uses `attackInterval` or `setInterval`/`setTimeout`, multiply the delay by `1 / game.speedMultiplier`. Example:
+
+```javascript
+const baseDelay = 1000; // original delay in ms
+const delay = baseDelay / (game.speedMultiplier || 1);
+setTimeout(nextAttack, delay);
+```
+
+4. Update the UI to visually indicate the active speed (add an `active` class).
+
+### Quick test
+- Start a battle, click `1x`, `2x`, `4x`. Attacks per second should scale accordingly.
+- Use console to set `game.speedMultiplier = 4` and observe faster attacks.
 
 ---
 
 ## STEP 2: Better Visual Feedback (Week 1-2)
 
-### What You'll Build
-Make damage numbers colorful and exciting
+### Goal
+Make damage numbers clear and exciting (color, size, crits).
 
-### Files You'll Edit
-- `scripts/battle.js`
-- `scripts/ui.js`
+### Files to edit
+- `scripts/battle.js` — calculate damage and emit damage events
+- `scripts/ui.js` — render floating damage text
 
-### What To Do
-1. Change damage number colors based on damage amount
-   - Small damage = white
-   - Medium damage = yellow
-   - Big damage = orange
-2. Add critical hits (10% chance)
-   - Critical damage = red color
-   - Critical damage = 1.5x normal damage
+### Step-by-step
+1. In `battle.js`, when computing damage, return an object: `{value, isCritical}`. Implement a crit check: `isCritical = Math.random() < 0.10` and multiply damage by 1.5 when critical.
 
-### How To Test
-- Watch damage numbers during battle
-- They should have different colors
-- Some should be bigger (critical hits)
+2. Emit a UI event or call a function like `ui.showDamage(x, {value, isCritical})`.
 
-### Success = Colorful damage numbers that look cool
+3. In `ui.js`, write `showDamage(x, opts)` to create a DOM element positioned over the target:
+
+```javascript
+const el = document.createElement('div');
+el.className = 'damage-number';
+el.textContent = opts.value;
+if (opts.isCritical) el.classList.add('crit');
+else if (opts.value > 100) el.classList.add('big');
+else if (opts.value > 20) el.classList.add('medium');
+else el.classList.add('small');
+container.appendChild(el);
+setTimeout(() => el.remove(), 1000);
+```
+
+4. Add CSS classes in `styles/main.css`:
+
+```css
+.damage-number.small { color: #fff; font-size: 12px; }
+.damage-number.medium { color: #ffea00; font-size: 16px; }
+.damage-number.big { color: #ff8a00; font-size: 20px; }
+.damage-number.crit { color: #ff4d4d; font-size: 26px; font-weight: 700; }
+```
+
+### Quick test
+- Start a battle and watch damage numbers. Use `console.log` in `battle.js` to print damage objects.
+- Temporarily raise crit chance to 0.5 to see crits more often while testing.
 
 ---
 
 ## STEP 3: Show Your Income (Week 2)
 
-### What You'll Build
-See how much gold/gems you earn per second
+### Goal
+Display gold/sec and floating income numbers when you earn gold.
 
-### Files You'll Edit
-- `scripts/ui.js`
-- `index.html`
-- `styles/main.css`
+### Files to edit
+- `index.html` — add income display area
+- `scripts/ui.js` — update top bar + floating numbers
+- `styles/main.css` — style the display and animation
 
-### What To Do
-1. Add text showing "+10 gold/sec" in the top bar
-2. Add floating "+50" numbers when you get gold
-3. Make the numbers fade out smoothly
+### Step-by-step
+1. Add an element in `index.html` near the top bar:
 
-### How To Test
-- Look at top bar - should show income rate
-- Win a battle - should see "+50" float up
-- Numbers should disappear after 1 second
+```html
+<div id="income-display">+0 gold/sec</div>
+```
 
-### Success = You can see income happening
+2. In `game.js`, compute income rate frequently (e.g., each second) and update `document.getElementById('income-display').textContent = `+${income} gold/sec`.
+
+3. Reuse the `showFloatingText()` helper (or implement one) that accepts `{text, x, y, className}` and animates the text upward with CSS transitions.
+
+4. When the player gains gold (battle reward, passive income), call `showFloatingText({text: '+50', className: 'gold-float'})` anchored to the top-right area.
+
+5. Add CSS for fade and translate animations and a short duration (800–1200ms).
+
+### Quick test
+- Trigger gold gain (win battle) and verify the top bar updates and a floating `+50` appears and fades.
 
 ---
 
 ## STEP 4: Save Your Progress Safely (Week 2-3)
 
-### What You'll Build
-Better save system that won't break
+### Goal
+Add versioned export/import and reset with confirmation.
 
-### Files You'll Edit
-- `scripts/storage.js`
-- `scripts/game.js`
-- `index.html`
+### Files to edit
+- `scripts/storage.js` — serialization & version handling
+- `index.html` — add Export / Import / Reset buttons
+- `scripts/game.js` — hook import/export into game state
 
-### What To Do
-1. Add save version number (v1.0, v1.1, etc.)
-2. Add "Export Save" button (copy save to clipboard)
-3. Add "Import Save" button (paste save from clipboard)
-4. Add "Reset Game" button with confirmation
+### Step-by-step
+1. Add buttons in `index.html`:
 
-### How To Test
-- Play for a bit
-- Click "Export Save" - should copy text
-- Reset game
-- Click "Import Save" - paste the text
-- Your progress should come back!
+```html
+<button id="export-save">Export Save</button>
+<button id="import-save">Import Save</button>
+<button id="reset-save">Reset Game</button>
+<textarea id="save-data" style="display:none"></textarea>
+```
 
-### Success = You can backup and restore your game
+2. In `storage.js`, create `exportSave()` that returns `JSON.stringify({version: '1.0', data: game.getSaveData()})` and `importSave(json)` that parses, checks `version`, and applies `data` (or migrates if versions differ).
+
+3. Wire buttons in `game.js`:
+- `#export-save` copies the string to clipboard via `navigator.clipboard.writeText(exportSave())` and shows a toast.
+- `#import-save` prompts/pastes from a visible textarea or `navigator.clipboard.readText()` then calls `importSave()`.
+- `#reset-save` shows `confirm('Are you sure? This will erase progress.')` and if confirmed calls `game.reset()` and `storage.save()`.
+
+4. Add a simple migration placeholder: if imported `version` !== current, call `migrate(oldVersion, data)` that returns data in current shape.
+
+### Quick test
+- Play, export the save, then reset, then import the string. Your progress should restore.
 
 ---
 
 ## STEP 5: Track Your Stats (Week 3)
 
-### What You'll Build
-A stats screen showing your achievements
+### Goal
+Collect and display play statistics in a modal.
 
-### Files You'll Edit
-- `scripts/game.js` (add stats tracking)
-- `index.html` (stats modal)
-- `styles/main.css` (make it look good)
+### Files to edit
+- `scripts/game.js` — increment stat counters
+- `index.html` — add a Stats button and modal markup
+- `styles/main.css` — style the modal
 
-### What To Do
-1. Track these numbers:
-   - Total damage dealt
-   - Battles won/lost
-   - Gold earned
-   - Time played
-2. Add "Stats" button
-3. Show all stats in a modal window
+### Step-by-step
+1. In `game.js`, add a `game.stats` object with counters: `totalDamage`, `battlesWon`, `battlesLost`, `goldEarned`, `playSeconds`.
 
-### How To Test
-- Play for a while
-- Click "Stats" button
-- Should see your numbers!
+2. Increment stats in appropriate places (e.g., on damage event add to `totalDamage`, on battle end increment `battlesWon`/`battlesLost`). Use a timer to increment `playSeconds` every second.
 
-### Success = Working stats screen
+3. Add a `Stats` button and modal in `index.html`:
+
+```html
+<button id="open-stats">Stats</button>
+<div id="stats-modal" class="modal">...</div>
+```
+
+4. When `open-stats` is clicked, populate the modal with values from `game.stats` and show it.
+
+### Quick test
+- Play a few battles, open Stats and verify the numbers match expectations.
 
 ---
 
 ## STEP 6: Add Character Pictures (Week 4-5)
 
-### What You'll Build
-Replace colored rectangles with actual characters
+### Goal
+Draw sprites or emojis instead of colored rectangles.
 
-### Files You'll Edit
-- `scripts/ui.js`
-- `scripts/hero.js`
-- `scripts/enemy.js`
+### Files to edit
+- `scripts/ui.js`, `scripts/hero.js`, `scripts/enemy.js`
 
-### What To Do
-1. Find free character sprites OR use emojis
-   - Free sprites: opengameart.org
-   - Emoji option: Use 🛡️ for tank, ⚔️ for damage, ❤️ for support
-2. Load images in the code
-3. Draw images instead of rectangles
+### Step-by-step
+1. Choose assets (sprites from OpenGameArt or simple emoji fallback). Add them to `assets/img/`.
 
-### How To Test
-- Start game
-- Should see pictures instead of colored boxes!
+2. Load images at startup: `const img = new Image(); img.src = 'assets/img/hero.png'; game.images.hero = img;`.
 
-### Success = Characters have images/emojis
+3. In the canvas draw routine, replace `ctx.fillRect()` for characters with `ctx.drawImage(game.images.hero, x, y, w, h)`.
+
+4. Provide a fallback: if image not loaded, draw the colored rectangle so nothing breaks.
+
+### Quick test
+- Reload the page, ensure sprites appear. If sprite missing, verify console for 404 and fallback rectangle shows.
 
 ---
 
 ## STEP 7: Add Simple Animations (Week 5-6)
 
-### What You'll Build
-Characters move when attacking
+### Goal
+Add small movement and hit flash effects for clarity.
 
-### Files You'll Edit
-- `scripts/ui.js`
-- `scripts/battle.js`
+### Files to edit
+- `scripts/ui.js`, `scripts/battle.js`
 
-### What To Do
-1. When hero attacks:
-   - Slide character right 20 pixels
-   - Wait 0.2 seconds
-   - Slide back to original position
-2. When taking damage:
-   - Flash character white for 0.1 seconds
+### Step-by-step
+1. Implement a short attack animation: when a hero attacks, set a temporary state `hero.anim = {type: 'attack', t: 0}`.
 
-### How To Test
-- Watch battles
-- Characters should move when attacking
-- Characters should flash when hit
+2. In your draw loop, if `hero.anim.type === 'attack'` translate the sprite by `Math.sin(t*PI)*20` pixels for 0.2s and increment `t` with delta time.
 
-### Success = Battle has movement!
+3. For hit flash, render a white overlay rectangle over the sprite for 0.1s when `hero.anim.type === 'hit'`.
+
+4. Ensure animations are frame-rate independent by using the time delta passed to the game loop.
+
+### Quick test
+- Watch a battle and verify the attack slide + hit flash. Tune distances/durations as needed.
 
 ---
 
 ## STEP 8: Make It Work on Phone (Week 6-7)
 
-### What You'll Build
-Game that works on mobile devices
+### Goal
+Responsive layout and touch-friendly controls.
 
-### Files You'll Edit
-- `styles/main.css`
-- `index.html`
-- `scripts/ui.js`
+### Files to edit
+- `styles/main.css`, `index.html`, `scripts/ui.js`
 
-### What To Do
-1. Make canvas smaller on phone screens
-2. Make buttons bigger (easier to tap)
-3. Test on your phone using Live Server
-   - Find your computer's IP (ipconfig in terminal)
-   - Open http://YOUR_IP:5500 on phone
+### Step-by-step
+1. Add responsive CSS rules (`@media (max-width: 600px)`) to reduce canvas size and enlarge UI buttons (min-height: 44px).
 
-### How To Test
-- Open game on phone
-- Should fit screen
-- Buttons should be easy to tap
-- Everything should be readable
+2. Ensure touch events are handled in addition to clicks: add `touchstart` listeners mirroring `click` handlers.
 
-### Success = Game works on phone
+3. Test locally: run Live Server, find your computer IP with `ipconfig` and open `http://YOUR_IP:5500` on phone browser.
+
+### Quick test
+- Verify layout, tappable areas, and game responsiveness on a phone. Adjust font sizes and spacing for readability.
 
 ---
 
 ## STEP 9: Add Sound Effects (Week 7)
 
-### What You'll Build
-Sound when attacking and winning
+### Goal
+Add attack and victory sounds with a mute toggle.
 
-### Files You'll Edit
-- `scripts/game.js`
-- `scripts/battle.js`
+### Files to edit
+- `scripts/game.js`, `scripts/battle.js`, add `assets/audio/`
 
-### What To Do
-1. Download free sounds from freesound.org
-   - Attack sound (sword slash)
-   - Victory sound (happy chime)
-2. Create `assets/audio/` folder
-3. Play sounds using HTML5 Audio
-4. Add mute button
+### Step-by-step
+1. Add audio files to `assets/audio/attack.mp3` and `assets/audio/victory.mp3`.
 
-### How To Test
-- Unmute game
-- Attack - should hear sound
-- Win battle - should hear victory sound
-- Mute button - should silence everything
+2. Create a small audio manager: `game.audio.play('attack')` that checks `game.muted` before playing.
 
-### Success = Working sound effects
+3. Call `game.audio.play('attack')` when an attack occurs and `game.audio.play('victory')` on win.
+
+4. Add a mute button that toggles `game.muted = true/false` and saves the preference to localStorage.
+
+### Quick test
+- Unmute and trigger sounds; use the mute button to silence them across reloads.
 
 ---
 
 ## STEP 10: Build Equipment System (Week 8-10)
 
-### What You'll Build
-Weapons and armor for heroes
+### Goal
+Allow heroes to equip items that modify stats.
 
-### New File You'll Create
-- `scripts/equipment.js`
+### Files to add/edit
+- Add `scripts/equipment.js`
+- Edit `scripts/hero.js`, `index.html`, `scripts/storage.js`
 
-### Files You'll Edit
-- `scripts/hero.js`
-- `index.html`
-- `scripts/storage.js`
+### Step-by-step
+1. Create `scripts/equipment.js` with an `Equipment` class and a factory to generate items.
 
-### What To Do
-1. Create Equipment class
-   - Properties: name, type (weapon/armor), attack bonus, defense bonus
-2. Give each hero 2 equipment slots
-3. Add equipment shop
-4. Equipment costs gold to buy
+2. Add `hero.equipment = [{}, {}]` slots. Update hero stat getters to include equipment bonuses (attack, defense).
 
-### How To Test
-- Open shop
-- Buy weapon
-- Equip on hero
-- Hero stats should increase!
+3. Add a shop UI to buy random or defined equipment. Buying reduces gold and adds item to inventory.
 
-### Success = Heroes can equip items
+4. Add equip/unequip buttons in the hero panel; when equipped, update displayed stats and persist to save.
+
+### Quick test
+- Buy an item, equip it, and verify the hero's damage/defense shown in the UI changes accordingly.
 
 ---
 
 ## STEP 11: Add Hero Skills (Week 10-12)
 
-### What You'll Build
-Special abilities for each hero
+### Goal
+Give each hero a special ability with cooldowns.
 
-### New File You'll Create
-- `scripts/skills.js`
+### Files to add/edit
+- Add `scripts/skills.js`
+- Edit `scripts/hero.js`, `scripts/battle.js`, `index.html`
 
-### Files You'll Edit
-- `scripts/hero.js`
-- `scripts/battle.js`
-- `index.html`
+### Step-by-step
+1. Implement a `Skill` class with `name`, `cooldown`, `lastUsed`, and `apply(target)`.
 
-### What To Do
-1. Create Skill class
-   - Properties: name, cooldown, effect
-2. Give each hero a special skill:
-   - Tank: "Shield Bash" - Stun enemy for 2 seconds
-   - Damage: "Power Strike" - Deal 3x damage
-   - Support: "Heal All" - Restore 30% HP to all heroes
-3. Skills activate automatically in battle
+2. Add skill definitions for Tank, Damage, and Support heroes. Trigger skills either automatically or via a UI button.
 
-### How To Test
-- Start battle
-- Watch for skill activations
-- Tank should stun enemies
-- Damage hero should do big hits sometimes
-- Support should heal team
+3. On skill activation set `skill.lastUsed = Date.now()` and prevent reuse until cooldown expires.
 
-### Success = Heroes use special abilities
+4. Ensure skills' effects are applied in `battle.js` (stun, burst damage, heal) and reflected in UI.
+
+### Quick test
+- Force-simulate a skill use and confirm effect and cooldown display.
 
 ---
 
 ## STEP 12: Polish and Deploy (Week 13-14)
 
-### What You'll Build
-Finished game on the internet!
+### Goal
+Add a tutorial, balance gameplay, and deploy to GitHub Pages.
 
-### What To Do
+### Step-by-step
+1. Tutorial: build a short guided overlay for new users (store `seenTutorial` in localStorage). Highlight controls and explain goals in 3 steps.
 
-#### Part A: Tutorial
-- Add first-time tutorial
-- Show arrows pointing to buttons
-- Explain how to play
+2. Balance: Play through the first 20 stages, log gold/reward ratios and adjust numbers in data files until progression feels smooth.
 
-#### Part B: Balance
-- Play to stage 20
-- Make sure difficulty feels good
-- Adjust gold rewards if needed
-- Adjust enemy health if needed
+3. Deploy: Create a GitHub repo (or use existing), push changes, and enable GitHub Pages. Use `gh-pages` branch or `main` → Pages settings.
 
-#### Part C: Deploy to GitHub Pages
-1. Go to GitHub.com
-2. Create new repository
-3. Upload all your files
-4. Settings → Pages → Enable
-5. Your game is live at username.github.io/game-name!
-
-### How To Test
-- Ask friends to play
-- Watch them play (don't help!)
-- See what confuses them
-- Fix those things
-
-### Success = Game is online and playable!
+### Quick test
+- Share the deployed URL with a friend; get feedback and iterate on polish.
 
 ---
 
