@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ritwickdey.liveserver",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "formulahendry.auto-close-tag",
+    "pranaygp.vscode-css-peek",
+    "pkief.material-icon-theme"
+  ]
+}
