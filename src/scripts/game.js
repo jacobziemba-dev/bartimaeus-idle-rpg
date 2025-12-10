@@ -27,6 +27,9 @@ class Game {
         this.lastSaveTime = Date.now();
         this.saveInterval = 30000; // Auto-save every 30 seconds
 
+        // Game speed multiplier (1 = normal, 2 = double, 4 = quad)
+        this.speedMultiplier = 1;
+
         // Initialize game
         this.init();
     }
@@ -152,6 +155,33 @@ class Game {
         document.getElementById('close-afk').addEventListener('click', () => {
             this.uiManager.hideAFKRewards();
         });
+
+        // Speed control buttons (1x, 2x, 4x)
+        const speedButtons = document.querySelectorAll('#speed-controls .speed-btn');
+        if (speedButtons && speedButtons.length) {
+            speedButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const s = Number(e.currentTarget.dataset.speed) || 1;
+                    this.speedMultiplier = s;
+                    try { localStorage.setItem('gameSpeed', String(s)); } catch (err) {}
+
+                    // Visual active state
+                    speedButtons.forEach(b => b.classList.toggle('active', Number(b.dataset.speed) === s));
+                });
+            });
+
+            // Restore saved speed from localStorage if present
+            try {
+                const saved = Number(localStorage.getItem('gameSpeed')) || 1;
+                if ([1,2,4].includes(saved)) {
+                    this.speedMultiplier = saved;
+                    const defaultBtn = document.querySelector(`#speed-controls .speed-btn[data-speed="${this.speedMultiplier}"]`);
+                    if (defaultBtn) defaultBtn.classList.add('active');
+                }
+            } catch (err) {
+                // ignore localStorage errors
+            }
+        }
     }
 
     /**

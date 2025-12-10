@@ -73,8 +73,12 @@ class BattleManager {
         // Update attack timer
         this.timeSinceLastAttack += deltaTime;
 
-        // Execute attacks every attackInterval (1 second)
-        if (this.timeSinceLastAttack >= this.attackInterval) {
+        // Determine effective interval using global speed multiplier if present
+        const speed = (typeof window !== 'undefined' && window.game && window.game.speedMultiplier) ? window.game.speedMultiplier : 1;
+        const effectiveInterval = this.attackInterval / (speed || 1);
+
+        // Execute attacks when accumulated time exceeds the effective interval
+        if (this.timeSinceLastAttack >= effectiveInterval) {
             this.executeRound();
             this.timeSinceLastAttack = 0;
         }

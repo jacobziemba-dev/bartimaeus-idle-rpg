@@ -122,6 +122,17 @@ body {
     transform: scale(0.95);
 }
 
+/* Speed control buttons (1x/2x/4x) */
+#speed-controls { display: flex; gap: 8px; align-items: center; }
+
+.speed-btn { padding: 6px 10px; border-radius: 8px; font-weight: bold; }
+
+.speed-btn.active {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+    border-color: #fb923c;
+    transform: scale(1.05);
+}
+
 /* ========================================
    Action Buttons (Bottom)
    ======================================== */
