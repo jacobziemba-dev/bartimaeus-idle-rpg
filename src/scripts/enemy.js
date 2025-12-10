@@ -58,7 +58,7 @@ class Enemy {
     takeDamage(damage) {
         // Defense reduces damage by 50% of defense value
         const reduction = this.defense * 0.5;
-        const actualDamage = Math.max(1, damage - reduction); // Minimum 1 damage
+        const actualDamage = Math.floor(Math.max(1, damage - reduction)); // Minimum 1 damage
 
         this.health -= actualDamage;
 
@@ -67,7 +67,7 @@ class Enemy {
             this.health = 0;
         }
 
-        return Math.floor(actualDamage);
+        return actualDamage;
     }
 
     /**
