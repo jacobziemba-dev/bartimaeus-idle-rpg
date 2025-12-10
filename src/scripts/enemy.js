@@ -160,17 +160,3 @@ function getStageGoldReward(stageLevel) {
     // Stage 10 = 1,297 gold
     return Math.floor(50 * stageLevel * Math.pow(1.1, stageLevel));
 }
-
-/**
- * Calculate gem reward for defeating a stage
- *
- * @param {number} stageLevel - Stage that was completed
- * @returns {number} Gem reward amount
- */
-function getStageGemReward(stageLevel) {
-    // Formula: 2 * stage (gems are rarer than gold)
-    // Stage 1 = 2 gems
-    // Stage 5 = 10 gems
-    // Stage 10 = 20 gems
-    return stageLevel * 2;
-}

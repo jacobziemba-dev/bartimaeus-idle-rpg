@@ -5,10 +5,7 @@
  * - Draws heroes and enemies on canvas
  * - Draws health bars
  * - Draws floating damage numbers
- * - Updates HTML elements (gold, gems, etc.)
- *
- * Learning Note: Canvas is like a digital painting canvas.
- * You draw shapes, text, and images on it using JavaScript.
+ * - Updates HTML elements (gold, stage, etc.)
  */
 
 class UIManager {
@@ -272,15 +269,13 @@ class UIManager {
     }
 
     /**
-     * Update HTML resource displays (gold, gems, stage)
+     * Update HTML resource displays (gold, stage)
      *
      * @param {number} gold - Current gold amount
-     * @param {number} gems - Current gems amount
      * @param {number} stage - Current stage number
      */
-    updateResourceDisplay(gold, gems, stage) {
+    updateResourceDisplay(gold, stage) {
         document.getElementById('gold-display').textContent = gold.toLocaleString();
-        document.getElementById('gem-display').textContent = gems.toLocaleString();
         document.getElementById('stage-number').textContent = stage;
     }
 
@@ -325,29 +320,6 @@ class UIManager {
     }
 
     /**
-     * Show AFK rewards modal
-     *
-     * @param {number} gold - Gold earned
-     * @param {number} gems - Gems earned
-     * @param {string} timeAway - Formatted time away
-     */
-    showAFKRewards(gold, gems, timeAway) {
-        document.getElementById('afk-gold').textContent = `+${gold.toLocaleString()}`;
-        document.getElementById('afk-gems').textContent = `+${gems.toLocaleString()}`;
-        document.getElementById('time-away').textContent = timeAway;
-
-        // Show modal
-        document.getElementById('afk-modal').style.display = 'flex';
-    }
-
-    /**
-     * Hide AFK rewards modal
-     */
-    hideAFKRewards() {
-        document.getElementById('afk-modal').style.display = 'none';
-    }
-
-    /**
      * Show/hide upgrade modal
      *
      * @param {boolean} show - True to show, false to hide
@@ -360,20 +332,27 @@ class UIManager {
      * Update battle control buttons
      *
      * @param {string} result - Battle result ('victory', 'defeat', or null)
+     * @param {string} mode - 'IDLE' or 'BOSS'
      */
-    updateBattleControls(result) {
+    updateBattleControls(result, mode = 'IDLE') {
         const nextStageBtn = document.getElementById('next-stage-btn');
         const retryBtn = document.getElementById('retry-btn');
 
-        if (result === 'victory') {
-            nextStageBtn.style.display = 'block';
-            retryBtn.style.display = 'none';
-        } else if (result === 'defeat') {
-            nextStageBtn.style.display = 'none';
-            retryBtn.style.display = 'block';
-        } else {
-            nextStageBtn.style.display = 'none';
-            retryBtn.style.display = 'none';
+        // In IDLE mode, always show Challenge button
+        if (mode === 'IDLE') {
+            if (nextStageBtn) {
+                nextStageBtn.style.display = 'block';
+                // Note: The text is set to "Challenge Stage" in game.js initialization
+            }
+            if (retryBtn) retryBtn.style.display = 'none';
+            return;
+        }
+
+        // In BOSS mode, hide challenge button while fighting
+        if (mode === 'BOSS') {
+            if (nextStageBtn) nextStageBtn.style.display = 'none';
+            if (retryBtn) retryBtn.style.display = 'none';
+            // Wait for result
         }
     }
 }

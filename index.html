@@ -17,10 +17,6 @@
                 <span class="resource-icon">💰</span>
                 <span id="gold-display">1000</span>
             </div>
-            <div class="resource-display">
-                <span class="resource-icon">💎</span>
-                <span id="gem-display">50</span>
-            </div>
             <div class="stage-display">
                 <span>Stage: <span id="stage-number">1</span></span>
             </div>
@@ -49,10 +45,6 @@
                 <span class="btn-icon">⬆️</span>
                 <span class="btn-text">Upgrade Heroes</span>
             </button>
-            <button class="action-btn" id="afk-rewards-btn">
-                <span class="btn-icon">🎁</span>
-                <span class="btn-text">AFK Rewards</span>
-            </button>
         </div>
 
     </div>
@@ -70,32 +62,11 @@
         </div>
     </div>
 
-    <!-- Modal: AFK Rewards Popup -->
-    <div id="afk-modal" class="modal" style="display: none;">
-        <div class="modal-content afk-loot">
-            <h2>AFK Loot!</h2>
-            <div class="loot-chest">🎁</div>
-            <p id="afk-time-away">You were away for: <span id="time-away">0m</span></p>
-            <div class="afk-rewards">
-                <div class="afk-reward">
-                    <span class="reward-icon">💰</span>
-                    <span id="afk-gold">+0</span>
-                </div>
-                <div class="afk-reward">
-                    <span class="reward-icon">💎</span>
-                    <span id="afk-gems">+0</span>
-                </div>
-            </div>
-            <button class="action-btn" id="close-afk">Collect</button>
-        </div>
-    </div>
-
     <!-- Include all game scripts in order -->
     <!-- Order matters! Classes must be defined before they're used -->
     <script src="src/scripts/hero.js"></script>
     <script src="src/scripts/enemy.js"></script>
     <script src="src/scripts/resources.js"></script>
-    <script src="src/scripts/storage.js"></script>
     <script src="src/scripts/battle.js"></script>
     <script src="src/scripts/ui.js"></script>
     <script src="src/scripts/game.js"></script>
