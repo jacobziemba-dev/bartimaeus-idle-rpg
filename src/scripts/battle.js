@@ -18,6 +18,7 @@ class BattleManager {
         this.isBattleActive = false;
         this.isPaused = false;
         this.battleResult = null; // 'victory', 'defeat', or null
+        this.battleMode = 'IDLE'; // 'IDLE' or 'BOSS'
 
         // Attack timing (heroes/enemies attack every 1 second)
         this.attackInterval = 1000; // milliseconds
@@ -32,11 +33,13 @@ class BattleManager {
      *
      * @param {Array<Hero>} heroes - Player's heroes
      * @param {number} stageLevel - Stage to fight
+     * @param {string} mode - 'IDLE' or 'BOSS'
      */
-    startBattle(heroes, stageLevel) {
+    startBattle(heroes, stageLevel, mode = 'IDLE') {
         // Store references
         this.heroes = heroes;
         this.currentStage = stageLevel;
+        this.battleMode = mode;
 
         // Heal all heroes to full health
         this.heroes.forEach(hero => hero.heal());
@@ -51,7 +54,7 @@ class BattleManager {
         this.timeSinceLastAttack = 0;
         this.damageNumbers = [];
 
-        console.log(`Battle started! Stage ${stageLevel}`);
+        console.log(`Battle started! Stage ${stageLevel} (${mode} Mode)`);
     }
 
     /**
@@ -217,6 +220,25 @@ class BattleManager {
         const heroesAlive = this.heroes.some(h => h.isAlive());
         const enemiesAlive = this.enemies.some(e => e.isAlive());
 
+        // In IDLE mode, heroes don't truly "lose", they just get back up
+        // And enemies respawn instantly when dead
+        if (this.battleMode === 'IDLE') {
+            if (!heroesAlive) {
+                // Heroes "wiped" in idle mode - just revive them
+                // In a real game we might add a penalty, but for now just keep fighting
+                this.heroes.forEach(h => h.heal());
+                console.log('Heroes revived in Idle Mode');
+            }
+
+            if (!enemiesAlive) {
+                // Enemies defeated in idle mode - spawn new wave immediately
+                this.enemies = createEnemiesForStage(this.currentStage);
+                console.log('New wave spawned in Idle Mode');
+            }
+            return;
+        }
+
+        // In BOSS mode, standard rules apply
         if (!enemiesAlive && heroesAlive) {
             // Victory!
             this.battleResult = 'victory';
@@ -284,7 +306,7 @@ class BattleManager {
      * Reset battle (for retry)
      */
     resetBattle() {
-        this.startBattle(this.heroes, this.currentStage);
+        this.startBattle(this.heroes, this.currentStage, this.battleMode);
     }
 
     /**

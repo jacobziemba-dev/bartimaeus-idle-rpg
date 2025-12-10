@@ -360,20 +360,27 @@ class UIManager {
      * Update battle control buttons
      *
      * @param {string} result - Battle result ('victory', 'defeat', or null)
+     * @param {string} mode - 'IDLE' or 'BOSS'
      */
-    updateBattleControls(result) {
+    updateBattleControls(result, mode = 'IDLE') {
         const nextStageBtn = document.getElementById('next-stage-btn');
         const retryBtn = document.getElementById('retry-btn');
 
-        if (result === 'victory') {
-            nextStageBtn.style.display = 'block';
-            retryBtn.style.display = 'none';
-        } else if (result === 'defeat') {
-            nextStageBtn.style.display = 'none';
-            retryBtn.style.display = 'block';
-        } else {
-            nextStageBtn.style.display = 'none';
-            retryBtn.style.display = 'none';
+        // In IDLE mode, always show Challenge button
+        if (mode === 'IDLE') {
+            if (nextStageBtn) {
+                nextStageBtn.style.display = 'block';
+                // Note: The text is set to "Challenge Stage" in game.js initialization
+            }
+            if (retryBtn) retryBtn.style.display = 'none';
+            return;
+        }
+
+        // In BOSS mode, hide challenge button while fighting
+        if (mode === 'BOSS') {
+            if (nextStageBtn) nextStageBtn.style.display = 'none';
+            if (retryBtn) retryBtn.style.display = 'none';
+            // Wait for result
         }
     }
 }

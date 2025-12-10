@@ -63,8 +63,8 @@ class Game {
         // Update UI
         this.updateUI();
 
-        // Start first battle
-        this.battleManager.startBattle(this.heroes, this.currentStage);
+        // Start first battle in IDLE mode
+        this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
 
         // Start game loop
         this.start();
@@ -125,15 +125,16 @@ class Game {
             document.getElementById('pause-btn').textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
         });
 
-        // Next stage button
-        document.getElementById('next-stage-btn').addEventListener('click', () => {
-            this.nextStage();
-        });
-
-        // Retry button
-        document.getElementById('retry-btn').addEventListener('click', () => {
-            this.retryStage();
-        });
+        // Challenge Stage button
+        // Note: The UI element ID 'next-stage-btn' is reused/renamed in UI later
+        // or we handle the existing button but treating it as "Challenge Boss"
+        const nextStageBtn = document.getElementById('next-stage-btn');
+        if (nextStageBtn) {
+            nextStageBtn.textContent = '⚔️ Challenge Stage';
+            nextStageBtn.addEventListener('click', () => {
+                this.startBossFight();
+            });
+        }
 
         // Upgrade Heroes button
         document.getElementById('upgrade-btn').addEventListener('click', () => {
@@ -280,6 +281,7 @@ class Game {
 
     /**
      * Handle battle end (victory or defeat)
+     * Only relevant for BOSS fights
      *
      * @param {string} result - 'victory' or 'defeat'
      */
@@ -293,21 +295,37 @@ class Game {
             this.resourceManager.addGems(gemReward);
 
             console.log(`Victory! Earned ${goldReward} gold and ${gemReward} gems`);
+
+            // Advance stage
+            this.currentStage++;
+            this.resourceManager.updateIdleRates(this.currentStage);
+            this.saveGame();
+
+            // Return to IDLE mode at new stage
+            setTimeout(() => {
+                this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
+                this.updateUI(); // Reset UI state
+            }, 2000); // Show victory screen for 2 seconds
+
+        } else if (result === 'defeat') {
+            // Just return to IDLE mode at current stage
+            setTimeout(() => {
+                this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
+                this.updateUI(); // Reset UI state
+            }, 2000); // Show defeat screen for 2 seconds
         }
     }
 
     /**
-     * Move to next stage
+     * Start a Boss Fight
      */
-    nextStage() {
-        this.currentStage++;
-        this.resourceManager.updateIdleRates(this.currentStage);
-        this.battleManager.startBattle(this.heroes, this.currentStage);
-        this.saveGame();
+    startBossFight() {
+        this.battleManager.startBattle(this.heroes, this.currentStage, 'BOSS');
+        this.updateUI();
     }
 
     /**
-     * Retry current stage
+     * Retry current stage - Deprecated in favor of auto-return to IDLE
      */
     retryStage() {
         this.battleManager.resetBattle();

@@ -36,14 +36,14 @@ class ResourceManager {
      */
     updateIdleRates(stageLevel) {
         // Gold per second increases with stage level
-        // Formula: stage * 10 gold/second
-        // Stage 1 = 10 gold/sec, Stage 5 = 50 gold/sec
-        this.goldPerSecond = stageLevel * 10;
+        // Formula: stage * 0.5 gold/second
+        // Stage 1 = 0.5 gold/sec, Stage 10 = 5 gold/sec
+        this.goldPerSecond = stageLevel * 0.5;
 
         // Gems per second (much slower than gold)
-        // Formula: stage * 0.1 gems/second
-        // Stage 1 = 0.1 gems/sec, Stage 10 = 1 gem/sec
-        this.gemsPerSecond = stageLevel * 0.1;
+        // Formula: stage * 0.01 gems/second
+        // Stage 1 = 0.01 gems/sec, Stage 100 = 1 gem/sec
+        this.gemsPerSecond = stageLevel * 0.01;
     }
 
     /**
@@ -59,10 +59,6 @@ class ResourceManager {
         // Generate idle resources
         this.gold += this.goldPerSecond * seconds;
         this.gems += this.gemsPerSecond * seconds;
-
-        // Round down (you can't have 0.5 gold)
-        this.gold = Math.floor(this.gold);
-        this.gems = Math.floor(this.gems);
     }
 
     /**
