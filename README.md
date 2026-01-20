@@ -23,19 +23,28 @@ A simplified AFK Arena-style idle RPG game with auto-battling heroes, idle resou
 
 ## 🌐 Deploy to GitHub Pages
 
-This is a simple vanilla JavaScript game with no build step required. You can deploy it to GitHub Pages easily!
+The game uses Vite for building and can be deployed to GitHub Pages. You'll need to build the project and deploy the `dist` folder.
 
 ### Quick Setup (One-Time)
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Source", select **Deploy from a branch**
-4. Under "Branch", select **main** and **/ (root)**
-5. Click **Save**
+1. Build the project locally:
+   ```bash
+   npm ci
+   npm run build
+   ```
+2. Go to your repository on GitHub
+3. Click **Settings** → **Pages**
+4. Under "Source", select **Deploy from a branch**
+5. Under "Branch", select **main** and **/dist** (or deploy dist folder separately)
+6. Click **Save**
+
+Note: Since GitHub Pages needs the built files from the `dist` folder, you'll need to either:
+- Commit the `dist` folder to your repository after building, OR
+- Use a separate gh-pages branch with only the dist contents
 
 That's it! Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
 
-### Manual Deployment Steps (if starting from scratch)
+### Setup Steps
 
 #### Step 1: Create GitHub Repository
 
@@ -56,15 +65,26 @@ git branch -M main
 git push -u origin main
 ```
 
-#### Step 3: Configure GitHub Pages
+#### Step 3: Build and Configure GitHub Pages
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Source", select **Deploy from a branch**
-4. Under "Branch", select **main** and **/ (root)**
-5. Click **Save**
-6. Wait 1-2 minutes for the deployment to complete
-7. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
+1. Build the project:
+   ```bash
+   npm ci
+   npm run build
+   ```
+2. Commit the dist folder (if not already in .gitignore):
+   ```bash
+   git add dist
+   git commit -m "Add build output"
+   git push
+   ```
+3. Go to your repository on GitHub
+4. Click **Settings** → **Pages**
+5. Under "Source", select **Deploy from a branch**
+6. Under "Branch", select **main** and **/dist**
+7. Click **Save**
+8. Wait 1-2 minutes for the deployment to complete
+9. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
 
 ## 📁 Project Structure
 
