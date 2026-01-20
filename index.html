@@ -8,71 +8,106 @@
     <link rel="stylesheet" href="src/styles/battle.css" />
   </head>
   <body>
-    <!-- Main Game Container -->
-    <div id="game-container">
-      <!-- Top UI Bar: Resources Display -->
-      <div id="top-bar">
-        <div class="resource-display">
-          <span class="resource-icon">💰</span>
-          <span id="gold-display">1000</span>
+    <!-- Loading Screen -->
+    <div id="loading-screen" style="display: flex">
+      <div class="loading-content">
+        <h1>⚔️ Bartimaeus Idle RPG</h1>
+        <div class="loading-bar">
+          <div id="loading-progress" style="width: 0%"></div>
         </div>
-        <div class="resource-display">
-          <span class="resource-icon">💎</span>
-          <span id="gem-display">50</span>
-        </div>
-        <div class="stage-display">
-          <span>Stage: <span id="stage-number">1</span></span>
-        </div>
-      </div>
-
-      <!-- Battle Canvas: Where the action happens -->
-      <div id="battle-container">
-        <canvas id="battle-canvas" width="800" height="400"></canvas>
-
-        <!-- Battle Controls Overlay -->
-        <div id="battle-controls">
-          <button id="pause-btn" class="control-btn">⏸️ Pause</button>
-          <button id="next-stage-btn" class="control-btn" style="display: none">
-            ➡️ Next Stage
-          </button>
-          <button id="retry-btn" class="control-btn" style="display: none">
-            🔄 Retry
-          </button>
-          <div
-            id="speed-controls"
-            style="display: flex; gap: 8px; align-items: center"
-          >
-            <button class="control-btn speed-btn" data-speed="1">1x</button>
-            <button class="control-btn speed-btn" data-speed="2">2x</button>
-            <button class="control-btn speed-btn" data-speed="4">4x</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Action Buttons -->
-      <div id="action-buttons">
-        <button class="action-btn" id="upgrade-btn">
-          <span class="btn-icon">⬆️</span>
-          <span class="btn-text">Upgrade Heroes</span>
-        </button>
-        <button class="action-btn" id="afk-rewards-btn">
-          <span class="btn-icon">🎁</span>
-          <span class="btn-text">AFK Rewards</span>
-        </button>
+        <p id="loading-text">Loading assets...</p>
       </div>
     </div>
 
-    <!-- Modal: Upgrade Heroes Panel -->
-    <div id="upgrade-modal" class="modal" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Upgrade Heroes</h2>
-          <button class="close-btn" id="close-upgrade">&times;</button>
+    <!-- Main Game Wrapper: Three-Panel Layout -->
+    <div id="game-wrapper" style="display: none">
+      <!-- Left Sidebar: Hero Info & Upgrades -->
+      <aside id="left-panel">
+        <div class="hero-portrait-section">
+          <img id="hero-portrait" src="" alt="Bartimaeus" style="display: none" />
+          <div class="hero-portrait-placeholder">⚔️</div>
+          <h2 id="hero-name">Bartimaeus</h2>
+          <div id="hero-level">Level <span>1</span></div>
         </div>
-        <div id="hero-list" class="hero-upgrade-list">
-          <!-- Heroes will be populated here by JavaScript -->
+
+        <div class="hero-stats-section">
+          <div class="stat-row">
+            <span class="stat-label">❤️ HP:</span>
+            <div class="stat-bar">
+              <div class="stat-fill hp-fill"></div>
+            </div>
+            <span class="stat-text">500/500</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">⚔️ ATK:</span>
+            <span id="hero-atk">30</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">🛡️ DEF:</span>
+            <span id="hero-def">25</span>
+          </div>
         </div>
-      </div>
+
+        <div class="resources-section">
+          <div class="resource-item">
+            <span class="resource-icon">💰</span>
+            <span id="gold-display">1000</span>
+          </div>
+          <div class="resource-item">
+            <span class="resource-icon">💎</span>
+            <span id="gem-display">50</span>
+          </div>
+        </div>
+
+        <div class="upgrades-section">
+          <h3>Upgrades</h3>
+          <button id="upgrade-stats-btn" class="upgrade-btn">
+            <span class="upgrade-name">Upgrade Stats</span>
+            <span class="upgrade-cost">100 💰</span>
+          </button>
+        </div>
+
+        <div class="skills-section">
+          <h3>Active Skills</h3>
+          <div id="skill-buttons">
+            <!-- Skill buttons added by JavaScript -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Panel: Battle Arena -->
+      <main id="center-panel">
+        <div id="stage-info">
+          <span>Stage: <span id="stage-number">1</span></span>
+          <span>Wave: <span id="wave-number">1</span></span>
+        </div>
+
+        <div id="battle-container">
+          <canvas id="battle-canvas"></canvas>
+
+          <!-- Battle Controls Overlay -->
+          <div id="battle-controls">
+            <button id="pause-btn" class="control-btn">⏸️ Pause</button>
+            <div id="speed-controls">
+              <button class="control-btn speed-btn" data-speed="1">1x</button>
+              <button class="control-btn speed-btn" data-speed="2">2x</button>
+              <button class="control-btn speed-btn" data-speed="4">4x</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar: Adventure Log -->
+      <aside id="right-panel">
+        <div class="log-header">
+          <h3>📜 Adventure Log</h3>
+          <button id="clear-log-btn" class="icon-btn" title="Clear log">🗑️</button>
+        </div>
+
+        <div id="adventure-log" class="log-container">
+          <!-- Log entries added dynamically -->
+        </div>
+      </aside>
     </div>
 
     <!-- Modal: AFK Rewards Popup -->
@@ -97,14 +132,27 @@
       </div>
     </div>
 
-    <!-- Include all game scripts in order -->
+    <!-- Include all game scripts in dependency order -->
     <!-- Order matters! Classes must be defined before they're used -->
+
+    <!-- Core Systems -->
+    <script src="src/scripts/assetManager.js"></script>
+
+    <!-- Game Data -->
     <script src="src/scripts/hero.js"></script>
     <script src="src/scripts/enemy.js"></script>
+
+    <!-- Game Systems -->
+    <script src="src/scripts/skills.js"></script>
+    <script src="src/scripts/adventureLog.js"></script>
     <script src="src/scripts/resources.js"></script>
     <script src="src/scripts/storage.js"></script>
+
+    <!-- Managers -->
     <script src="src/scripts/battle.js"></script>
     <script src="src/scripts/ui.js"></script>
+
+    <!-- Main Controller -->
     <script src="src/scripts/game.js"></script>
   </body>
 </html>

@@ -37,6 +37,9 @@ class Hero {
         this.attack = this.calculateAttack();
         this.defense = this.calculateDefense();
 
+        // Skill system (new for horde mode)
+        this.unlockedSkills = ['fireball']; // Default starting skill
+
         // Visual properties
         this.color = this.getColorByRole();
         this.x = 0; // Position on canvas (set by UI)
@@ -159,6 +162,27 @@ class Hero {
     }
 
     /**
+     * Unlock a new skill for the hero
+     *
+     * @param {string} skillId - The skill ID to unlock
+     */
+    unlockSkill(skillId) {
+        if (!this.unlockedSkills.includes(skillId)) {
+            this.unlockedSkills.push(skillId);
+        }
+    }
+
+    /**
+     * Check if hero has a specific skill unlocked
+     *
+     * @param {string} skillId - The skill ID to check
+     * @returns {boolean} True if skill is unlocked
+     */
+    hasSkill(skillId) {
+        return this.unlockedSkills.includes(skillId);
+    }
+
+    /**
      * Serialize hero to object for saving
      *
      * @returns {object} Hero data that can be saved to LocalStorage
@@ -171,7 +195,8 @@ class Hero {
             level: this.level,
             baseHealth: this.baseHealth,
             baseAttack: this.baseAttack,
-            baseDefense: this.baseDefense
+            baseDefense: this.baseDefense,
+            unlockedSkills: this.unlockedSkills
         };
     }
 
@@ -198,24 +223,20 @@ class Hero {
         hero.attack = hero.calculateAttack();
         hero.defense = hero.calculateDefense();
 
+        // Restore unlocked skills
+        hero.unlockedSkills = data.unlockedSkills || ['fireball'];
+
         return hero;
     }
 }
 
 /**
- * Create the 3 starting heroes
+ * Create the starting hero (Bartimaeus)
+ * In horde mode, we start with a single hero
  *
- * @returns {Array<Hero>} Array of 3 heroes with different roles
+ * @returns {Hero} Bartimaeus the Tank
  */
 function createStartingHeroes() {
-    return [
-        // Tank: High HP, low damage, medium defense
-        new Hero(0, 'Bartimaeus', 'Tank', 500, 30, 25),
-
-        // Damage Dealer: Medium HP, high damage, low defense
-        new Hero(1, 'Nathaniel', 'Damage', 300, 60, 15),
-
-        // Support: Medium HP, medium damage, medium defense (balanced)
-        new Hero(2, 'Kitty', 'Support', 350, 40, 20)
-    ];
+    // Tank: High HP, balanced damage and defense for solo survival
+    return new Hero(0, 'Bartimaeus', 'Tank', 500, 30, 25);
 }
