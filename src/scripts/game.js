@@ -64,6 +64,7 @@ class Game {
     if (loadingScreen) loadingScreen.style.display = 'none';
     const gameWrapper = document.getElementById('game-wrapper');
     if (gameWrapper) gameWrapper.style.display = 'grid';
+    this.uiManager.resizeCanvas();
 
     // Try to load saved game
     const saveState = this.storageManager.loadGame();

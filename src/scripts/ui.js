@@ -31,30 +31,27 @@ class UIManager {
       window.addEventListener('resize', () => this.resizeCanvas());
     }
 
-    // Character display settings
-    this.characterSize = 60; // Size of character rectangles
-    this.healthBarWidth = 70;
-    this.healthBarHeight = 8;
-
-    // Position settings
-    this.heroStartX = 100;
-    this.enemyStartX = 600;
-    this.yPositions = [100, 200, 300]; // Y positions for 3 characters
   }
 
   /**
    * Resize the canvas backing store to match its CSS size and device pixel ratio
    */
   resizeCanvas() {
+    const baseWidth = 800;
+    const baseHeight = 400;
+    const heroXRatio = 0.125;
+    const enemyXRatio = 0.75;
+    const yPositionRatios = [0.25, 0.5, 0.75];
+
     // Get the CSS size of the canvas (fallback to attributes if not styled)
     const cssWidth =
       this.canvas.clientWidth ||
       parseInt(this.canvas.getAttribute('width')) ||
-      800;
+      baseWidth;
     const cssHeight =
       this.canvas.clientHeight ||
       parseInt(this.canvas.getAttribute('height')) ||
-      400;
+      baseHeight;
 
     // Set the canvas width/height in device pixels
     this.canvas.width = Math.round(cssWidth * this.dpr);
@@ -70,6 +67,27 @@ class UIManager {
     // Store logical drawing size in CSS pixels for the rest of the UI code
     this.width = cssWidth;
     this.height = cssHeight;
+
+    // Responsive layout scaling for cross-platform sizing
+    const scale = Math.min(this.width / baseWidth, this.height / baseHeight, 1);
+    this.characterSize = Math.max(40, Math.round(60 * scale));
+    this.healthBarWidth = Math.max(50, Math.round(70 * scale));
+    this.healthBarHeight = Math.max(6, Math.round(8 * scale));
+    this.labelFontSize = Math.max(12, Math.round(14 * scale));
+    this.damageFontSize = Math.max(14, Math.round(24 * scale));
+    this.resultFontSize = Math.max(32, Math.round(72 * scale));
+
+    this.heroStartX = Math.max(
+      this.characterSize,
+      Math.round(this.width * heroXRatio)
+    );
+    this.enemyStartX = Math.min(
+      this.width - this.characterSize,
+      Math.round(this.width * enemyXRatio)
+    );
+    this.yPositions = yPositionRatios.map(ratio =>
+      Math.round(this.height * ratio)
+    );
   }
 
   /**
@@ -213,11 +231,12 @@ class UIManager {
     if (!isAlive) {
       this.ctx.strokeStyle = '#ff0000';
       this.ctx.lineWidth = 4;
+      const crossOffset = Math.round(size * 0.33);
       this.ctx.beginPath();
-      this.ctx.moveTo(x - 20, y - 20);
-      this.ctx.lineTo(x + 20, y + 20);
-      this.ctx.moveTo(x + 20, y - 20);
-      this.ctx.lineTo(x - 20, y + 20);
+      this.ctx.moveTo(x - crossOffset, y - crossOffset);
+      this.ctx.lineTo(x + crossOffset, y + crossOffset);
+      this.ctx.moveTo(x + crossOffset, y - crossOffset);
+      this.ctx.lineTo(x - crossOffset, y + crossOffset);
       this.ctx.stroke();
     }
   }
@@ -261,7 +280,7 @@ class UIManager {
    */
   drawLabel(x, y, text, color) {
     this.ctx.fillStyle = color;
-    this.ctx.font = 'bold 14px Arial';
+    this.ctx.font = `bold ${this.labelFontSize || 14}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.fillText(text, x, y);
   }
@@ -281,7 +300,7 @@ class UIManager {
 
       // Draw damage text
       this.ctx.fillStyle = color;
-      this.ctx.font = 'bold 24px Arial';
+      this.ctx.font = `bold ${this.damageFontSize || 24}px Arial`;
       this.ctx.textAlign = 'center';
       this.ctx.fillText(`-${num.damage}`, num.x, num.y);
 
@@ -308,7 +327,7 @@ class UIManager {
     this.ctx.shadowBlur = 30;
     this.ctx.shadowColor = color;
     this.ctx.fillStyle = color;
-    this.ctx.font = 'bold 72px Arial';
+    this.ctx.font = `bold ${this.resultFontSize || 72}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.fillText(text, this.width / 2, this.height / 2);
 
