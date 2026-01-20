@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100" width="80" height="100">
+  <!-- Alternative Bartimaeus - Warrior Style with Axe -->
+  
+  <!-- Cape (behind) -->
+  <path d="M 28 45 Q 10 50 5 80 L 12 82 Q 18 55 28 50 Z" fill="#dc2626" opacity="0.8"/>
+  <path d="M 52 45 Q 70 50 75 80 L 68 82 Q 62 55 52 50 Z" fill="#dc2626" opacity="0.8"/>
+  
+  <!-- Body (heavy armor) -->
+  <ellipse cx="40" cy="60" rx="18" ry="26" fill="#78716c" stroke="#57534e" stroke-width="2"/>
+  <ellipse cx="40" cy="60" rx="14" ry="22" fill="#a8a29e" opacity="0.5"/>
+  
+  <!-- Armor plates -->
+  <rect x="30" y="48" width="20" height="5" fill="#57534e" rx="1"/>
+  <rect x="30" y="58" width="20" height="5" fill="#57534e" rx="1"/>
+  <rect x="30" y="68" width="20" height="5" fill="#57534e" rx="1"/>
+  
+  <!-- Battle Axe (right hand) -->
+  <line x1="58" y1="50" x2="58" y2="72" stroke="#78350f" stroke-width="4"/>
+  <path d="M 56 46 L 68 48 L 68 42 L 56 44 Z" fill="#71717a" stroke="#52525b" stroke-width="1"/>
+  <path d="M 60 42 L 64 44 L 62 46 Z" fill="#a8a29e"/>
+  
+  <!-- Shield (left hand) - round -->
+  <circle cx="22" cy="60" r="12" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+  <circle cx="22" cy="60" r="8" fill="#fbbf24" opacity="0.7"/>
+  <circle cx="22" cy="60" r="4" fill="#dc2626"/>
+  
+  <!-- Head -->
+  <circle cx="40" cy="32" r="13" fill="#fcd6b3" stroke="#d4a574" stroke-width="1.5"/>
+  
+  <!-- Helmet (Viking style) -->
+  <ellipse cx="40" cy="28" rx="14" ry="10" fill="#71717a" stroke="#52525b" stroke-width="1.5"/>
+  <rect x="30" y="26" width="20" height="4" fill="#52525b"/>
+  
+  <!-- Horns on helmet -->
+  <path d="M 28 26 Q 22 20 20 14" fill="none" stroke="#e5e4e2" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 52 26 Q 58 20 60 14" fill="none" stroke="#e5e4e2" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Face guard -->
+  <rect x="36" y="30" width="8" height="6" fill="#52525b" rx="1"/>
+  
+  <!-- Eyes (through guard) -->
+  <rect x="37" y="32" width="3" height="2" fill="#fbbf24" opacity="0.9"/>
+  <rect x="44" y="32" width="3" height="2" fill="#fbbf24" opacity="0.9"/>
+  
+  <!-- Legs -->
+  <rect x="32" y="82" width="7" height="16" fill="#57534e" rx="2"/>
+  <rect x="41" y="82" width="7" height="16" fill="#57534e" rx="2"/>
+  <rect x="32" y="94" width="7" height="5" fill="#3f3f46" rx="1"/>
+  <rect x="41" y="94" width="7" height="5" fill="#3f3f46" rx="1"/>
+  
+  <!-- Battle aura (red/warrior) -->
+  <circle cx="40" cy="50" r="36" fill="none" stroke="#dc2626" stroke-width="1.5" opacity="0.25">
+    <animate attributeName="r" values="33;39;33" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.35;0.15;0.35" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+</svg>
