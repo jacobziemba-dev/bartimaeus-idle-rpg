@@ -2,13 +2,34 @@
  * AssetManager - Handles loading and caching of game assets (sprites, backgrounds, UI images)
  * Provides fallback support when assets are missing
  */
-class AssetManager {
-  constructor() {
-    this.assets = {};
-    this.loadedCount = 0;
-    this.totalCount = 0;
-    this.loadingProgress = 0;
 
+interface AssetManifest {
+  [category: string]: {
+    [name: string]: string;
+  };
+}
+
+interface AssetCache {
+  [category: string]: {
+    [name: string]: HTMLImageElement | null;
+  };
+}
+
+interface AssetStats {
+  total: number;
+  loaded: number;
+  failed: number;
+  progress: number;
+}
+
+export class AssetManager {
+  private assets: AssetCache = {};
+  private loadedCount: number = 0;
+  private totalCount: number = 0;
+  private loadingProgress: number = 0;
+  private manifest: AssetManifest;
+
+  constructor() {
     // Asset manifest - maps category -> name -> file path
     this.manifest = {
       backgrounds: {
@@ -47,9 +68,9 @@ class AssetManager {
 
   /**
    * Load all assets defined in manifest
-   * @returns {Promise} Resolves when all assets are loaded (or failed)
+   * @returns Promise that resolves when all assets are loaded (or failed)
    */
-  loadAll() {
+  loadAll(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Count total assets
       this.totalCount = 0;
@@ -65,7 +86,7 @@ class AssetManager {
 
       console.log(`Loading ${this.totalCount} assets...`);
 
-      const loadPromises = [];
+      const loadPromises: Promise<HTMLImageElement | null>[] = [];
 
       // Load each category
       Object.keys(this.manifest).forEach(category => {
@@ -99,13 +120,13 @@ class AssetManager {
 
   /**
    * Load a single asset
-   * @param {string} category - Asset category
-   * @param {string} name - Asset name
-   * @param {string} path - Asset file path
-   * @returns {Promise} Resolves when asset loads or rejects on error
+   * @param category - Asset category
+   * @param name - Asset name
+   * @param path - Asset file path
+   * @returns Promise that resolves when asset loads or rejects on error
    */
-  loadAsset(category, name, path) {
-    return new Promise((resolve, reject) => {
+  private loadAsset(category: string, name: string, path: string): Promise<HTMLImageElement | null> {
+    return new Promise((resolve) => {
       const img = new Image();
 
       img.onload = () => {
@@ -139,11 +160,11 @@ class AssetManager {
 
   /**
    * Get an asset by category and name
-   * @param {string} category - Asset category
-   * @param {string} name - Asset name
-   * @returns {Image|null} The loaded image or null if not found
+   * @param category - Asset category
+   * @param name - Asset name
+   * @returns The loaded image or null if not found
    */
-  get(category, name) {
+  get(category: string, name: string): HTMLImageElement | null {
     if (!this.assets[category]) {
       return null;
     }
@@ -152,24 +173,24 @@ class AssetManager {
 
   /**
    * Check if all assets are loaded
-   * @returns {boolean} True if all assets finished loading (success or failure)
+   * @returns True if all assets finished loading (success or failure)
    */
-  isLoaded() {
+  isLoaded(): boolean {
     return this.loadingProgress >= 1.0;
   }
 
   /**
    * Get loading progress as percentage
-   * @returns {number} Progress from 0 to 1
+   * @returns Progress from 0 to 1
    */
-  getProgress() {
+  getProgress(): number {
     return this.loadingProgress;
   }
 
   /**
    * Update loading screen UI if it exists
    */
-  updateLoadingScreen() {
+  private updateLoadingScreen(): void {
     const progressBar = document.getElementById('loading-progress');
     const loadingText = document.getElementById('loading-text');
 
@@ -186,9 +207,9 @@ class AssetManager {
 
   /**
    * Get stats about loaded assets
-   * @returns {object} Object with loaded/total/failed counts
+   * @returns Object with loaded/total/failed counts
    */
-  getStats() {
+  getStats(): AssetStats {
     let totalAssets = 0;
     let loadedAssets = 0;
 

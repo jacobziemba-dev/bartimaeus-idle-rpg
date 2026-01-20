@@ -1,34 +1,56 @@
 /**
+ * Skill System - Active abilities for combat
+ */
+
+import type { Hero } from './hero';
+import type { Enemy } from './enemy';
+
+// Forward declaration for BattleManager type
+interface BattleManager {
+  createDamageNumber?: (x: number, y: number, damage: number, isHeal: boolean) => void;
+  adventureLog?: any;
+}
+
+type SkillEffect = (caster: Hero, targets: Enemy[], battleManager: BattleManager) => void;
+
+/**
  * Skill - Represents an active ability that can be used in combat
  */
-class Skill {
-  constructor(id, name, description, cooldown, manaCost, effect) {
+export class Skill {
+  id: string;
+  name: string;
+  description: string;
+  baseCooldown: number; // milliseconds
+  currentCooldown: number = 0;
+  manaCost: number; // For future mana system
+  effect: SkillEffect;
+  icon: HTMLImageElement | null = null; // Set by AssetManager
+
+  constructor(id: string, name: string, description: string, cooldown: number, manaCost: number, effect: SkillEffect) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.baseCooldown = cooldown; // milliseconds
-    this.currentCooldown = 0;
-    this.manaCost = manaCost; // For future mana system
-    this.effect = effect; // Function: (caster, targets, battleManager) => void
-    this.icon = null; // Set by AssetManager
+    this.baseCooldown = cooldown;
+    this.manaCost = manaCost;
+    this.effect = effect;
   }
 
   /**
    * Check if skill can be used (not on cooldown)
-   * @returns {boolean} True if skill is ready
+   * @returns True if skill is ready
    */
-  canUse() {
+  canUse(): boolean {
     return this.currentCooldown <= 0;
   }
 
   /**
    * Use the skill
-   * @param {Hero} caster - The character using the skill
-   * @param {Array} targets - Array of target enemies
-   * @param {BattleManager} battleManager - Reference to battle manager
-   * @returns {boolean} True if skill was used successfully
+   * @param caster - The character using the skill
+   * @param targets - Array of target enemies
+   * @param battleManager - Reference to battle manager
+   * @returns True if skill was used successfully
    */
-  use(caster, targets, battleManager) {
+  use(caster: Hero, targets: Enemy[], battleManager: BattleManager): boolean {
     if (!this.canUse()) {
       return false;
     }
@@ -44,9 +66,9 @@ class Skill {
 
   /**
    * Update cooldown timer
-   * @param {number} deltaTime - Time since last update in milliseconds
+   * @param deltaTime - Time since last update in milliseconds
    */
-  update(deltaTime) {
+  update(deltaTime: number): void {
     if (this.currentCooldown > 0) {
       this.currentCooldown = Math.max(0, this.currentCooldown - deltaTime);
     }
@@ -54,18 +76,18 @@ class Skill {
 
   /**
    * Get cooldown as percentage (0 to 1)
-   * @returns {number} Cooldown progress (1 = on cooldown, 0 = ready)
+   * @returns Cooldown progress (1 = on cooldown, 0 = ready)
    */
-  getCooldownPercent() {
+  getCooldownPercent(): number {
     if (this.baseCooldown === 0) return 0;
     return this.currentCooldown / this.baseCooldown;
   }
 
   /**
    * Get remaining cooldown in seconds
-   * @returns {number} Seconds remaining
+   * @returns Seconds remaining
    */
-  getCooldownSeconds() {
+  getCooldownSeconds(): number {
     return Math.ceil(this.currentCooldown / 1000);
   }
 }
@@ -73,7 +95,7 @@ class Skill {
 /**
  * Predefined skills available in the game
  */
-const SKILLS = {
+export const SKILLS = {
   FIREBALL: new Skill(
     'fireball',
     'Fireball',
@@ -133,7 +155,7 @@ const SKILLS = {
           if (battleManager.createDamageNumber) {
             // Stagger damage numbers slightly for visual clarity
             setTimeout(() => {
-              battleManager.createDamageNumber(enemy.x, enemy.y, actualDamage, false);
+              battleManager.createDamageNumber!(enemy.x, enemy.y, actualDamage, false);
             }, enemiesHit * 50);
           }
         }
@@ -176,8 +198,11 @@ const SKILLS = {
 /**
  * SkillManager - Manages a hero's unlocked skills and cooldowns
  */
-class SkillManager {
-  constructor(hero) {
+export class SkillManager {
+  private hero: Hero;
+  private skills: Skill[];
+
+  constructor(hero: Hero) {
     this.hero = hero;
 
     // Initialize with unlocked skills from hero
@@ -200,10 +225,10 @@ class SkillManager {
 
   /**
    * Get skill definition by ID
-   * @param {string} skillId - The skill ID
-   * @returns {Skill|null} The skill or null if not found
+   * @param skillId - The skill ID
+   * @returns The skill or null if not found
    */
-  getSkillById(skillId) {
+  getSkillById(skillId: string): Skill | null {
     switch (skillId.toLowerCase()) {
       case 'fireball':
         return SKILLS.FIREBALL;
@@ -219,20 +244,20 @@ class SkillManager {
 
   /**
    * Update all skill cooldowns
-   * @param {number} deltaTime - Time since last update in milliseconds
+   * @param deltaTime - Time since last update in milliseconds
    */
-  update(deltaTime) {
+  update(deltaTime: number): void {
     this.skills.forEach(skill => skill.update(deltaTime));
   }
 
   /**
    * Use a skill by ID
-   * @param {string} skillId - The skill to use
-   * @param {Array} targets - Array of target enemies
-   * @param {BattleManager} battleManager - Reference to battle manager
-   * @returns {boolean} True if skill was used successfully
+   * @param skillId - The skill to use
+   * @param targets - Array of target enemies
+   * @param battleManager - Reference to battle manager
+   * @returns True if skill was used successfully
    */
-  useSkill(skillId, targets, battleManager) {
+  useSkill(skillId: string, targets: Enemy[], battleManager: BattleManager): boolean {
     const skill = this.skills.find(s => s.id === skillId);
 
     if (!skill) {
@@ -250,17 +275,17 @@ class SkillManager {
 
   /**
    * Get all skills
-   * @returns {Array} Array of Skill objects
+   * @returns Array of Skill objects
    */
-  getSkills() {
+  getSkills(): Skill[] {
     return this.skills;
   }
 
   /**
    * Unlock a new skill for the hero
-   * @param {string} skillId - The skill ID to unlock
+   * @param skillId - The skill ID to unlock
    */
-  unlockSkill(skillId) {
+  unlockSkill(skillId: string): void {
     // Check if already unlocked
     if (this.skills.find(s => s.id === skillId)) {
       console.log(`Skill already unlocked: ${skillId}`);
@@ -285,10 +310,10 @@ class SkillManager {
 
   /**
    * Get skill by ID from unlocked skills
-   * @param {string} skillId - The skill ID
-   * @returns {Skill|null} The skill or null if not found
+   * @param skillId - The skill ID
+   * @returns The skill or null if not found
    */
-  getSkill(skillId) {
+  getSkill(skillId: string): Skill | null {
     return this.skills.find(s => s.id === skillId) || null;
   }
 }

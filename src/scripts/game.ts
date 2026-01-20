@@ -9,7 +9,39 @@
  * Learning Note: This is where everything comes together!
  */
 
-class Game {
+import { AssetManager } from './assetManager';
+import { BattleManager } from './battle';
+import { ResourceManager } from './resources';
+import { StorageManager, createSaveState, loadHeroesFromSave, loadResourcesFromSave, loadStageFromSave } from './storage';
+import { UIManager } from './ui';
+import { AdventureLog } from './adventureLog';
+import { SkillManager } from './skills';
+import { createStartingHeroes } from './hero';
+import { getStageGoldReward, getStageGemReward } from './enemy';
+import type { Hero } from './hero';
+
+export class Game {
+  assetManager: AssetManager;
+  battleManager: BattleManager;
+  resourceManager: ResourceManager;
+  storageManager: StorageManager;
+  uiManager: UIManager;
+  adventureLog: AdventureLog;
+  skillManager: SkillManager | null = null;
+
+  // Game state
+  heroes: Hero | null = null; // Single hero in horde mode
+  currentStage: number = 1;
+  isRunning: boolean = false;
+
+  // Timing
+  lastFrameTime: number = Date.now();
+  lastSaveTime: number = Date.now();
+  saveInterval: number = 30000; // Auto-save every 30 seconds
+
+  // Game speed multiplier (1 = normal, 2 = double, 4 = quad)
+  speedMultiplier: number = 1;
+
   constructor() {
     // Initialize all managers
     this.assetManager = new AssetManager();
@@ -17,19 +49,7 @@ class Game {
     this.resourceManager = new ResourceManager();
     this.storageManager = new StorageManager();
     this.uiManager = new UIManager('battle-canvas');
-
-    // Game state
-    this.heroes = null; // Single hero in horde mode
-    this.currentStage = 1;
-    this.isRunning = false;
-
-    // Timing
-    this.lastFrameTime = Date.now();
-    this.lastSaveTime = Date.now();
-    this.saveInterval = 30000; // Auto-save every 30 seconds
-
-    // Game speed multiplier (1 = normal, 2 = double, 4 = quad)
-    this.speedMultiplier = 1;
+    this.adventureLog = new AdventureLog();
 
     // Don't initialize immediately - wait for assets to load
     this.loadAssets();
@@ -38,7 +58,7 @@ class Game {
   /**
    * Load all game assets before starting
    */
-  async loadAssets() {
+  async loadAssets(): Promise<void> {
     try {
       // Load all assets
       await this.assetManager.loadAll();
@@ -56,7 +76,7 @@ class Game {
    * Initialize the game
    * Loads save data or creates new game
    */
-  init() {
+  init(): void {
     console.log('Initializing Bartimaeus Idle RPG...');
 
     // Hide loading screen and show main game UI
@@ -65,6 +85,9 @@ class Game {
     const gameWrapper = document.getElementById('game-wrapper');
     if (gameWrapper) gameWrapper.style.display = 'grid';
     this.uiManager.resizeCanvas();
+
+    // Initialize adventure log
+    this.adventureLog.init();
 
     // Try to load saved game
     const saveState = this.storageManager.loadGame();
@@ -82,14 +105,25 @@ class Game {
       this.resourceManager.updateIdleRates(this.currentStage);
     }
 
+    // Initialize skill manager for the hero
+    if (this.heroes) {
+      this.skillManager = new SkillManager(this.heroes);
+    }
+
+    // Connect systems
+    this.battleManager.adventureLog = this.adventureLog;
+    this.battleManager.skillManager = this.skillManager;
+
     // Set up UI event listeners
     this.setupEventListeners();
 
     // Update UI
     this.updateUI();
 
-    // Start first battle in IDLE mode
-    this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
+    // Start first battle
+    if (this.heroes) {
+      this.battleManager.startBattle(this.heroes, this.currentStage);
+    }
 
     // Start game loop
     this.start();
@@ -100,9 +134,9 @@ class Game {
   /**
    * Load game state from save data
    *
-   * @param {object} saveState - Saved game data
+   * @param saveState - Saved game data
    */
-  loadGameState(saveState) {
+  loadGameState(saveState: any): void {
     this.heroes = loadHeroesFromSave(saveState);
     this.currentStage = loadStageFromSave(saveState);
     loadResourcesFromSave(saveState, this.resourceManager);
@@ -112,9 +146,9 @@ class Game {
   /**
    * Check for offline earnings and show AFK rewards
    *
-   * @param {object} saveState - Saved game data
+   * @param saveState - Saved game data
    */
-  checkOfflineEarnings(saveState) {
+  checkOfflineEarnings(saveState: any): void {
     const lastSaveTime = saveState.lastSaveTime || Date.now();
     const currentTime = Date.now();
     const timeAway = currentTime - lastSaveTime;
@@ -142,7 +176,7 @@ class Game {
   /**
    * Set up event listeners for buttons
    */
-  setupEventListeners() {
+  setupEventListeners(): void {
     // Pause button
     const pauseBtn = document.getElementById('pause-btn');
     if (pauseBtn) {
@@ -154,13 +188,11 @@ class Game {
     }
 
     // Challenge Stage button
-    // Note: The UI element ID 'next-stage-btn' is reused/renamed in UI later
-    // or we handle the existing button but treating it as "Challenge Boss"
     const nextStageBtn = document.getElementById('next-stage-btn');
     if (nextStageBtn) {
-      nextStageBtn.textContent = '⚔️ Challenge Stage';
+      nextStageBtn.textContent = '⚔️ Next Stage';
       nextStageBtn.addEventListener('click', () => {
-        this.startBossFight();
+        this.advanceStage();
       });
     }
 
@@ -182,17 +214,6 @@ class Game {
       });
     }
 
-    // AFK Rewards button (manual check)
-    const afkRewardsBtn = document.getElementById('afk-rewards-btn');
-    if (afkRewardsBtn) {
-      afkRewardsBtn.addEventListener('click', () => {
-        // For now, just show current passive income info
-        alert(
-          `Passive Income:\n💰 ${this.resourceManager.goldPerSecond}/sec\n💎 ${this.resourceManager.gemsPerSecond.toFixed(1)}/sec`
-        );
-      });
-    }
-
     // Close AFK modal
     const closeAfkBtn = document.getElementById('close-afk');
     if (closeAfkBtn) {
@@ -207,16 +228,19 @@ class Game {
     );
     if (speedButtons && speedButtons.length) {
       speedButtons.forEach(btn => {
-        btn.addEventListener('click', e => {
-          const s = Number(e.currentTarget.dataset.speed) || 1;
+        btn.addEventListener('click', (e) => {
+          const target = e.currentTarget as HTMLElement;
+          const s = Number(target.dataset.speed) || 1;
           this.speedMultiplier = s;
           try {
             localStorage.setItem('gameSpeed', String(s));
-          } catch (err) {}
+          } catch (err) {
+            // Ignore localStorage errors
+          }
 
           // Visual active state
           speedButtons.forEach(b =>
-            b.classList.toggle('active', Number(b.dataset.speed) === s)
+            b.classList.toggle('active', Number((b as HTMLElement).dataset.speed) === s)
           );
         });
       });
@@ -232,7 +256,7 @@ class Game {
           if (defaultBtn) defaultBtn.classList.add('active');
         }
       } catch (err) {
-        // ignore localStorage errors
+        // Ignore localStorage errors
       }
     }
   }
@@ -240,7 +264,7 @@ class Game {
   /**
    * Start the game loop
    */
-  start() {
+  start(): void {
     this.isRunning = true;
     this.gameLoop();
   }
@@ -249,7 +273,7 @@ class Game {
    * Main game loop - runs 60 times per second
    * This is the heart of the game!
    */
-  gameLoop() {
+  gameLoop(): void {
     if (!this.isRunning) {
       return;
     }
@@ -272,9 +296,9 @@ class Game {
   /**
    * Update game state (called every frame)
    *
-   * @param {number} deltaTime - Time since last update in milliseconds
+   * @param deltaTime - Time since last update in milliseconds
    */
-  update(deltaTime) {
+  update(deltaTime: number): void {
     // Update battle
     this.battleManager.update(deltaTime);
 
@@ -298,13 +322,15 @@ class Game {
   /**
    * Render everything to screen
    */
-  render() {
+  render(): void {
     // Render battle canvas
-    this.uiManager.render(
-      this.heroes,
-      this.battleManager.enemies,
-      this.battleManager.getDamageNumbers()
-    );
+    if (this.heroes) {
+      this.uiManager.render(
+        this.heroes,
+        this.battleManager.enemies,
+        this.battleManager.getDamageNumbers()
+      );
+    }
 
     // In horde mode, battles are continuous (no battle result screen)
   }
@@ -312,91 +338,67 @@ class Game {
   /**
    * Update UI elements (gold, gems, stage, etc.)
    */
-  updateUI() {
+  updateUI(): void {
     this.uiManager.updateResourceDisplay(
       this.resourceManager.getGold(),
       this.resourceManager.getGems(),
       this.currentStage
     );
 
-    // In horde mode, we're always in IDLE mode (no boss fights yet)
-    this.uiManager.updateBattleControls(null, 'IDLE');
+    // Update battle controls
+    this.uiManager.updateBattleControls(null, 'HORDE');
   }
 
   /**
-   * Handle battle end (victory or defeat)
-   * Only relevant for BOSS fights
-   *
-   * @param {string} result - 'victory' or 'defeat'
+   * Advance to the next stage
    */
-  handleBattleEnd(result) {
-    if (result === 'victory') {
-      // Award gold and gems
-      const goldReward = getStageGoldReward(this.currentStage);
-      const gemReward = getStageGemReward(this.currentStage);
+  advanceStage(): void {
+    // Award gold and gems
+    const goldReward = getStageGoldReward(this.currentStage);
+    const gemReward = getStageGemReward(this.currentStage);
 
-      this.resourceManager.addGold(goldReward);
-      this.resourceManager.addGems(gemReward);
+    this.resourceManager.addGold(goldReward);
+    this.resourceManager.addGems(gemReward);
 
-      console.log(`Victory! Earned ${goldReward} gold and ${gemReward} gems`);
+    console.log(`Completed Stage ${this.currentStage}! Earned ${goldReward} gold and ${gemReward} gems`);
 
-      // Advance stage
-      this.currentStage++;
-      this.resourceManager.updateIdleRates(this.currentStage);
-      this.saveGame();
+    // Advance stage
+    this.currentStage++;
+    this.resourceManager.updateIdleRates(this.currentStage);
+    this.saveGame();
 
-      // Return to IDLE mode at new stage
-      setTimeout(() => {
-        this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
-        this.updateUI(); // Reset UI state
-      }, 2000); // Show victory screen for 2 seconds
-    } else if (result === 'defeat') {
-      // Just return to IDLE mode at current stage
-      setTimeout(() => {
-        this.battleManager.startBattle(this.heroes, this.currentStage, 'IDLE');
-        this.updateUI(); // Reset UI state
-      }, 2000); // Show defeat screen for 2 seconds
+    // Start battle at new stage
+    if (this.heroes) {
+      this.battleManager.startBattle(this.heroes, this.currentStage);
     }
-  }
-
-  /**
-   * Start a Boss Fight
-   */
-  startBossFight() {
-    this.battleManager.startBattle(this.heroes, this.currentStage, 'BOSS');
     this.updateUI();
-  }
-
-  /**
-   * Retry current stage - Deprecated in favor of auto-return to IDLE
-   */
-  retryStage() {
-    this.battleManager.resetBattle();
   }
 
   /**
    * Open the upgrade modal
    */
-  openUpgradeModal() {
-    this.uiManager.updateUpgradeModal(this.heroes, heroId => {
-      this.upgradeHero(heroId);
-    });
-    this.uiManager.toggleUpgradeModal(true);
+  openUpgradeModal(): void {
+    if (this.heroes) {
+      this.uiManager.updateUpgradeModal(this.heroes, (heroId) => {
+        this.upgradeHero(heroId);
+      });
+      this.uiManager.toggleUpgradeModal(true);
+    }
   }
 
   /**
    * Close the upgrade modal
    */
-  closeUpgradeModal() {
+  closeUpgradeModal(): void {
     this.uiManager.toggleUpgradeModal(false);
   }
 
   /**
    * Upgrade the hero
    *
-   * @param {number} heroId - ID of hero to upgrade (optional, kept for compatibility)
+   * @param heroId - ID of hero to upgrade (optional, kept for compatibility)
    */
-  upgradeHero(heroId) {
+  upgradeHero(heroId?: number): void {
     const hero = this.heroes;
 
     if (!hero) {
@@ -411,6 +413,11 @@ class Game {
       hero.upgrade();
       console.log(`${hero.name} upgraded to level ${hero.level}!`);
 
+      // Log to adventure log
+      if (this.adventureLog) {
+        this.adventureLog.logUpgrade(hero.name, hero.level);
+      }
+
       // Update UI to show new stats
       this.updateUI();
 
@@ -424,7 +431,9 @@ class Game {
   /**
    * Save game to LocalStorage
    */
-  saveGame() {
+  saveGame(): void {
+    if (!this.heroes) return;
+
     const saveState = createSaveState(
       this.heroes,
       this.resourceManager,
@@ -437,7 +446,7 @@ class Game {
   /**
    * Stop the game loop
    */
-  stop() {
+  stop(): void {
     this.isRunning = false;
   }
 }
@@ -454,7 +463,7 @@ window.addEventListener('load', () => {
   const game = new Game();
 
   // Make game accessible in browser console (for debugging)
-  window.game = game;
+  (window as any).game = game;
 
   console.log('Game started! Type "game" in console to inspect game state.');
 });

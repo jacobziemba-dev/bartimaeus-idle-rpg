@@ -2,18 +2,30 @@
  * AdventureLog - Text-based event feed for tracking game events
  * Displays combat, loot, progression, and story events in right sidebar
  */
-class AdventureLog {
-  constructor(maxEntries = 100) {
-    this.entries = [];
+
+type LogEntryType = 'combat' | 'loot' | 'stage' | 'skill' | 'story';
+
+interface LogEntry {
+  type: LogEntryType;
+  message: string;
+  timestamp: string;
+  id: number;
+}
+
+export class AdventureLog {
+  private entries: LogEntry[] = [];
+  private maxEntries: number;
+  private container: HTMLElement | null = null;
+
+  constructor(maxEntries: number = 100) {
     this.maxEntries = maxEntries;
-    this.container = null; // Set when DOM is ready
   }
 
   /**
    * Initialize the log with DOM element
    * Call this after DOM is loaded
    */
-  init() {
+  init(): void {
     this.container = document.getElementById('adventure-log');
     if (!this.container) {
       console.warn('Adventure log container not found');
@@ -22,10 +34,10 @@ class AdventureLog {
 
   /**
    * Add a new entry to the log
-   * @param {string} type - Entry type: 'combat', 'loot', 'stage', 'skill', 'story'
-   * @param {string} message - The log message
+   * @param type - Entry type: 'combat', 'loot', 'stage', 'skill', 'story'
+   * @param message - The log message
    */
-  add(type, message) {
+  add(type: LogEntryType, message: string): void {
     const timestamp = new Date().toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
@@ -33,7 +45,7 @@ class AdventureLog {
       hour12: false
     });
 
-    const entry = {
+    const entry: LogEntry = {
       type: type,
       message: message,
       timestamp: timestamp,
@@ -55,14 +67,14 @@ class AdventureLog {
 
   /**
    * Render a single entry to the DOM
-   * @param {object} entry - The entry to render
+   * @param entry - The entry to render
    */
-  renderEntry(entry) {
+  private renderEntry(entry: LogEntry): void {
     if (!this.container) return;
 
     const logEntry = document.createElement('div');
     logEntry.className = `log-entry ${entry.type}`;
-    logEntry.dataset.id = entry.id;
+    logEntry.dataset.id = String(entry.id);
 
     logEntry.innerHTML = `
       <span class="log-time">[${entry.timestamp}]</span>
@@ -74,14 +86,14 @@ class AdventureLog {
 
     // Limit DOM entries to prevent memory bloat
     while (this.container.children.length > this.maxEntries) {
-      this.container.removeChild(this.container.lastChild);
+      this.container.removeChild(this.container.lastChild!);
     }
   }
 
   /**
    * Clear all log entries
    */
-  clear() {
+  clear(): void {
     this.entries = [];
 
     if (this.container) {
@@ -91,9 +103,9 @@ class AdventureLog {
 
   /**
    * Get all entries
-   * @returns {Array} Array of log entries
+   * @returns Array of log entries
    */
-  getEntries() {
+  getEntries(): LogEntry[] {
     return this.entries;
   }
 
@@ -101,88 +113,88 @@ class AdventureLog {
 
   /**
    * Log combat damage
-   * @param {string} attacker - Name of attacker
-   * @param {string} target - Name of target
-   * @param {number} damage - Damage amount
+   * @param attacker - Name of attacker
+   * @param target - Name of target
+   * @param damage - Damage amount
    */
-  logCombat(attacker, target, damage) {
+  logCombat(attacker: string, target: string, damage: number): void {
     this.add('combat', `${attacker} dealt ${damage} damage to ${target}`);
   }
 
   /**
    * Log enemy defeated
-   * @param {string} enemyType - Type of enemy
+   * @param enemyType - Type of enemy
    */
-  logEnemyDefeated(enemyType) {
+  logEnemyDefeated(enemyType: string): void {
     this.add('combat', `💀 Defeated ${enemyType}`);
   }
 
   /**
    * Log loot obtained
-   * @param {string} itemName - Name of item/resource
-   * @param {number} quantity - Amount obtained
+   * @param itemName - Name of item/resource
+   * @param quantity - Amount obtained
    */
-  logLoot(itemName, quantity) {
+  logLoot(itemName: string, quantity: number): void {
     this.add('loot', `💰 Obtained ${quantity}x ${itemName}`);
   }
 
   /**
    * Log stage progression
-   * @param {number} stageNumber - The new stage number
+   * @param stageNumber - The new stage number
    */
-  logStage(stageNumber) {
+  logStage(stageNumber: number): void {
     this.add('stage', `🎯 Reached Stage ${stageNumber}!`);
   }
 
   /**
    * Log wave start
-   * @param {number} waveNumber - The wave number
+   * @param waveNumber - The wave number
    */
-  logWave(waveNumber) {
+  logWave(waveNumber: number): void {
     this.add('combat', `⚔️ Wave ${waveNumber} incoming!`);
   }
 
   /**
    * Log skill usage
-   * @param {string} casterName - Name of skill user
-   * @param {string} skillName - Name of skill
-   * @param {number} damage - Damage dealt (if applicable)
+   * @param casterName - Name of skill user
+   * @param skillName - Name of skill
+   * @param damage - Damage dealt (if applicable)
    */
-  logSkill(casterName, skillName, damage = null) {
+  logSkill(casterName: string, skillName: string, damage: number | null = null): void {
     const damageText = damage !== null ? ` for ${damage} damage` : '';
     this.add('skill', `✨ ${casterName} cast ${skillName}${damageText}!`);
   }
 
   /**
    * Log hero respawn
-   * @param {string} heroName - Name of hero
+   * @param heroName - Name of hero
    */
-  logRespawn(heroName) {
+  logRespawn(heroName: string): void {
     this.add('story', `💫 ${heroName} respawned and continues the fight!`);
   }
 
   /**
    * Log upgrade
-   * @param {string} upgradeType - Type of upgrade
-   * @param {number} newLevel - New level after upgrade
+   * @param upgradeType - Type of upgrade
+   * @param newLevel - New level after upgrade
    */
-  logUpgrade(upgradeType, newLevel) {
+  logUpgrade(upgradeType: string, newLevel: number): void {
     this.add('stage', `⬆️ ${upgradeType} upgraded to level ${newLevel}!`);
   }
 
   /**
    * Log story event
-   * @param {string} message - Story message
+   * @param message - Story message
    */
-  logStory(message) {
+  logStory(message: string): void {
     this.add('story', message);
   }
 
   /**
    * Log migration message
-   * @param {string} message - Migration message
+   * @param message - Migration message
    */
-  logMigration(message) {
+  logMigration(message: string): void {
     this.add('story', `🔄 ${message}`);
   }
 }

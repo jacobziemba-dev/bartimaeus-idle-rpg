@@ -11,11 +11,41 @@
  * You draw shapes, text, and images on it using JavaScript.
  */
 
-class UIManager {
-  constructor(canvasId) {
+import type { Hero } from './hero';
+import type { Enemy } from './enemy';
+import type { DamageNumber, BattleMode } from '../types';
+
+export class UIManager {
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private dpr: number;
+  private width: number = 0;
+  private height: number = 0;
+
+  // Responsive layout properties
+  private characterSize: number = 60;
+  private healthBarWidth: number = 70;
+  private healthBarHeight: number = 8;
+  private labelFontSize: number = 14;
+  private damageFontSize: number = 24;
+  private resultFontSize: number = 72;
+  private heroStartX: number = 0;
+  private enemyStartX: number = 0;
+  private yPositions: number[] = [];
+
+  constructor(canvasId: string) {
     // Get canvas element and 2D drawing context
-    this.canvas = document.getElementById(canvasId);
-    this.ctx = this.canvas.getContext('2d');
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) {
+      throw new Error(`Canvas element with id "${canvasId}" not found`);
+    }
+    this.canvas = canvas;
+
+    const ctx = this.canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Could not get 2D context from canvas');
+    }
+    this.ctx = ctx;
 
     // Device pixel ratio for crisp rendering on high-DPI displays
     this.dpr =
@@ -30,13 +60,12 @@ class UIManager {
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', () => this.resizeCanvas());
     }
-
   }
 
   /**
    * Resize the canvas backing store to match its CSS size and device pixel ratio
    */
-  resizeCanvas() {
+  resizeCanvas(): void {
     const baseWidth = 800;
     const baseHeight = 400;
     const heroXRatio = 0.125;
@@ -46,11 +75,11 @@ class UIManager {
     // Get the CSS size of the canvas (fallback to attributes if not styled)
     const cssWidth =
       this.canvas.clientWidth ||
-      parseInt(this.canvas.getAttribute('width')) ||
+      parseInt(this.canvas.getAttribute('width') || String(baseWidth)) ||
       baseWidth;
     const cssHeight =
       this.canvas.clientHeight ||
-      parseInt(this.canvas.getAttribute('height')) ||
+      parseInt(this.canvas.getAttribute('height') || String(baseHeight)) ||
       baseHeight;
 
     // Set the canvas width/height in device pixels
@@ -93,11 +122,11 @@ class UIManager {
   /**
    * Main render function - draws everything
    *
-   * @param {Array<Hero>} heroes - Heroes to draw
-   * @param {Array<Enemy>} enemies - Enemies to draw
-   * @param {Array} damageNumbers - Damage numbers to draw
+   * @param heroes - Heroes to draw
+   * @param enemies - Enemies to draw
+   * @param damageNumbers - Damage numbers to draw
    */
-  render(heroes, enemies, damageNumbers) {
+  render(heroes: Hero | Hero[], enemies: Enemy[], damageNumbers: DamageNumber[]): void {
     // Clear canvas (like erasing the whiteboard)
     this.clearCanvas();
 
@@ -115,14 +144,14 @@ class UIManager {
   /**
    * Clear the entire canvas
    */
-  clearCanvas() {
+  private clearCanvas(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   /**
    * Draw background gradient and effects
    */
-  drawBackground() {
+  private drawBackground(): void {
     // Draw a subtle gradient background
     const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
     gradient.addColorStop(0, '#2d1b3d');
@@ -143,9 +172,9 @@ class UIManager {
   /**
    * Draw hero (single hero in horde mode)
    *
-   * @param {Hero|Array<Hero>} heroes - Hero or array of heroes to draw
+   * @param heroes - Hero or array of heroes to draw
    */
-  drawHeroes(heroes) {
+  private drawHeroes(heroes: Hero | Hero[]): void {
     // Handle single hero or array for backward compatibility
     const heroArray = Array.isArray(heroes) ? heroes : [heroes];
 
@@ -173,9 +202,9 @@ class UIManager {
   /**
    * Draw all enemies
    *
-   * @param {Array<Enemy>} enemies - Enemies to draw
+   * @param enemies - Enemies to draw
    */
-  drawEnemies(enemies) {
+  private drawEnemies(enemies: Enemy[]): void {
     enemies.forEach((enemy, index) => {
       const x = this.enemyStartX;
       const y = this.yPositions[index];
@@ -198,12 +227,12 @@ class UIManager {
   /**
    * Draw a single character (rectangle with glow effect)
    *
-   * @param {number} x - X position
-   * @param {number} y - Y position
-   * @param {string} color - Color
-   * @param {boolean} isAlive - If false, draw as gray/dead
+   * @param x - X position
+   * @param y - Y position
+   * @param color - Color
+   * @param isAlive - If false, draw as gray/dead
    */
-  drawCharacter(x, y, color, isAlive) {
+  private drawCharacter(x: number, y: number, color: string, isAlive: boolean): void {
     const size = this.characterSize;
 
     // If dead, draw gray
@@ -244,12 +273,12 @@ class UIManager {
   /**
    * Draw a health bar
    *
-   * @param {number} x - X position (center)
-   * @param {number} y - Y position (center)
-   * @param {number} healthPercent - Health percentage (0 to 1)
-   * @param {boolean} isHero - If true, use green; if false, use red
+   * @param x - X position (center)
+   * @param y - Y position (center)
+   * @param healthPercent - Health percentage (0 to 1)
+   * @param isHero - If true, use green; if false, use red
    */
-  drawHealthBar(x, y, healthPercent, isHero) {
+  private drawHealthBar(x: number, y: number, healthPercent: number, isHero: boolean): void {
     const width = this.healthBarWidth;
     const height = this.healthBarHeight;
 
@@ -273,12 +302,12 @@ class UIManager {
   /**
    * Draw a text label
    *
-   * @param {number} x - X position (center)
-   * @param {number} y - Y position
-   * @param {string} text - Text to display
-   * @param {string} color - Text color
+   * @param x - X position (center)
+   * @param y - Y position
+   * @param text - Text to display
+   * @param color - Text color
    */
-  drawLabel(x, y, text, color) {
+  private drawLabel(x: number, y: number, text: string, color: string): void {
     this.ctx.fillStyle = color;
     this.ctx.font = `bold ${this.labelFontSize || 14}px Arial`;
     this.ctx.textAlign = 'center';
@@ -288,12 +317,12 @@ class UIManager {
   /**
    * Draw floating damage numbers
    *
-   * @param {Array} damageNumbers - Array of damage number objects
+   * @param damageNumbers - Array of damage number objects
    */
-  drawDamageNumbers(damageNumbers) {
+  private drawDamageNumbers(damageNumbers: DamageNumber[]): void {
     damageNumbers.forEach(num => {
       // Color: red for hero damage, white for enemy damage
-      const color = num.isHero ? '#ef4444' : '#ffffff';
+      const color = num.isHeal ? '#10b981' : '#ef4444';
 
       // Set opacity
       this.ctx.globalAlpha = num.opacity;
@@ -302,7 +331,8 @@ class UIManager {
       this.ctx.fillStyle = color;
       this.ctx.font = `bold ${this.damageFontSize || 24}px Arial`;
       this.ctx.textAlign = 'center';
-      this.ctx.fillText(`-${num.damage}`, num.x, num.y);
+      const prefix = num.isHeal ? '+' : '-';
+      this.ctx.fillText(`${prefix}${num.damage}`, num.x, num.y);
 
       // Reset opacity
       this.ctx.globalAlpha = 1.0;
@@ -312,9 +342,9 @@ class UIManager {
   /**
    * Draw battle result overlay (Victory or Defeat)
    *
-   * @param {string} result - 'victory' or 'defeat'
+   * @param result - 'victory' or 'defeat'
    */
-  drawBattleResult(result) {
+  drawBattleResult(result: string): void {
     // Semi-transparent dark overlay
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     this.ctx.fillRect(0, 0, this.width, this.height);
@@ -338,27 +368,35 @@ class UIManager {
   /**
    * Update HTML resource displays (gold, gems, stage)
    *
-   * @param {number} gold - Current gold amount
-   * @param {number} gems - Current gems amount
-   * @param {number} stage - Current stage number
+   * @param gold - Current gold amount
+   * @param gems - Current gems amount
+   * @param stage - Current stage number
    */
-  updateResourceDisplay(gold, gems, stage) {
-    document.getElementById('gold-display').textContent = gold.toLocaleString();
-    document.getElementById('gem-display').textContent = gems.toLocaleString();
-    document.getElementById('stage-number').textContent = stage;
+  updateResourceDisplay(gold: number, gems: number, stage: number): void {
+    const goldDisplay = document.getElementById('gold-display');
+    const gemDisplay = document.getElementById('gem-display');
+    const stageNumber = document.getElementById('stage-number');
+
+    if (goldDisplay) goldDisplay.textContent = gold.toLocaleString();
+    if (gemDisplay) gemDisplay.textContent = gems.toLocaleString();
+    if (stageNumber) stageNumber.textContent = String(stage);
   }
 
   /**
    * Update upgrade modal with hero information
    *
-   * @param {Array<Hero>} heroes - Heroes to display
-   * @param {function} onUpgrade - Callback when upgrade button clicked
+   * @param heroes - Heroes to display
+   * @param onUpgrade - Callback when upgrade button clicked
    */
-  updateUpgradeModal(heroes, onUpgrade) {
+  updateUpgradeModal(heroes: Hero | Hero[], onUpgrade: (heroId: number) => void): void {
     const heroList = document.getElementById('hero-list');
+    if (!heroList) return;
+
     heroList.innerHTML = ''; // Clear existing content
 
-    heroes.forEach(hero => {
+    const heroArray = Array.isArray(heroes) ? heroes : [heroes];
+
+    heroArray.forEach(hero => {
       const heroItem = document.createElement('div');
       heroItem.className = 'hero-item';
 
@@ -381,8 +419,9 @@ class UIManager {
 
     // Add event listeners to upgrade buttons
     document.querySelectorAll('.hero-upgrade-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const heroId = parseInt(e.target.dataset.heroId);
+      btn.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const heroId = parseInt(target.dataset.heroId || '0');
         onUpgrade(heroId);
       });
     });
@@ -391,64 +430,60 @@ class UIManager {
   /**
    * Show AFK rewards modal
    *
-   * @param {number} gold - Gold earned
-   * @param {number} gems - Gems earned
-   * @param {string} timeAway - Formatted time away
+   * @param gold - Gold earned
+   * @param gems - Gems earned
+   * @param timeAway - Formatted time away
    */
-  showAFKRewards(gold, gems, timeAway) {
-    document.getElementById('afk-gold').textContent =
-      `+${gold.toLocaleString()}`;
-    document.getElementById('afk-gems').textContent =
-      `+${gems.toLocaleString()}`;
-    document.getElementById('time-away').textContent = timeAway;
+  showAFKRewards(gold: number, gems: number, timeAway: string): void {
+    const afkGold = document.getElementById('afk-gold');
+    const afkGems = document.getElementById('afk-gems');
+    const timeAwayEl = document.getElementById('time-away');
+    const afkModal = document.getElementById('afk-modal');
+
+    if (afkGold) afkGold.textContent = `+${gold.toLocaleString()}`;
+    if (afkGems) afkGems.textContent = `+${gems.toLocaleString()}`;
+    if (timeAwayEl) timeAwayEl.textContent = timeAway;
 
     // Show modal
-    document.getElementById('afk-modal').style.display = 'flex';
+    if (afkModal) afkModal.style.display = 'flex';
   }
 
   /**
    * Hide AFK rewards modal
    */
-  hideAFKRewards() {
-    document.getElementById('afk-modal').style.display = 'none';
+  hideAFKRewards(): void {
+    const afkModal = document.getElementById('afk-modal');
+    if (afkModal) afkModal.style.display = 'none';
   }
 
   /**
    * Show/hide upgrade modal
    *
-   * @param {boolean} show - True to show, false to hide
+   * @param show - True to show, false to hide
    */
-  toggleUpgradeModal(show) {
-    document.getElementById('upgrade-modal').style.display = show
-      ? 'flex'
-      : 'none';
+  toggleUpgradeModal(show: boolean): void {
+    const upgradeModal = document.getElementById('upgrade-modal');
+    if (upgradeModal) {
+      upgradeModal.style.display = show ? 'flex' : 'none';
+    }
   }
 
   /**
    * Update battle control buttons
    *
-   * @param {string} result - Battle result ('victory', 'defeat', or null)
-   * @param {string} mode - 'IDLE' or 'BOSS'
+   * @param result - Battle result ('victory', 'defeat', or null)
+   * @param mode - 'IDLE' or 'HORDE'
    */
-  updateBattleControls(result, mode = 'IDLE') {
+  updateBattleControls(result: string | null = null, mode: BattleMode = 'HORDE'): void {
     const nextStageBtn = document.getElementById('next-stage-btn');
     const retryBtn = document.getElementById('retry-btn');
 
-    // In IDLE mode, always show Challenge button
-    if (mode === 'IDLE') {
-      if (nextStageBtn) {
-        nextStageBtn.style.display = 'block';
-        // Note: The text is set to "Challenge Stage" in game.js initialization
-      }
-      if (retryBtn) retryBtn.style.display = 'none';
-      return;
+    // In IDLE/HORDE mode, always show Challenge button
+    if (nextStageBtn) {
+      nextStageBtn.style.display = 'block';
     }
-
-    // In BOSS mode, hide challenge button while fighting
-    if (mode === 'BOSS') {
-      if (nextStageBtn) nextStageBtn.style.display = 'none';
-      if (retryBtn) retryBtn.style.display = 'none';
-      // Wait for result
+    if (retryBtn) {
+      retryBtn.style.display = 'none';
     }
   }
 }

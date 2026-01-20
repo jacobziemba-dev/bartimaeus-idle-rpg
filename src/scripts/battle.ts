@@ -5,42 +5,47 @@
  * Hero fights 3-5 enemies at once, defeated enemies respawn continuously
  */
 
-class BattleManager {
-  constructor() {
-    // Battle state - Single hero vs enemy horde
-    this.hero = null; // Single hero reference
-    this.enemies = [];
-    this.currentStage = 1;
-    this.currentWave = 1;
-    this.enemiesDefeatedThisStage = 0;
+import type { Hero } from './hero';
+import type { Enemy } from './enemy';
+import { Enemy as EnemyClass } from './enemy';
+import type { AdventureLog } from './adventureLog';
+import type { SkillManager } from './skills';
+import type { DamageNumber, EnemyType, BattleMode } from '../types';
 
-    // Enemy spawn settings
-    this.maxEnemies = 3; // Start with 3, scales to 5 based on stage
-    this.battleMode = 'HORDE'; // Always horde mode now
+export class BattleManager {
+  // Battle state - Single hero vs enemy horde
+  hero: Hero | null = null;
+  enemies: Enemy[] = [];
+  currentStage: number = 1;
+  currentWave: number = 1;
+  enemiesDefeatedThisStage: number = 0;
 
-    // Battle status
-    this.isBattleActive = false;
-    this.isPaused = false;
+  // Enemy spawn settings
+  maxEnemies: number = 3; // Start with 3, scales to 5 based on stage
+  battleMode: BattleMode = 'HORDE';
 
-    // Attack timing (attacks every 1 second)
-    this.attackInterval = 1000; // milliseconds
-    this.timeSinceLastAttack = 0;
+  // Battle status
+  isBattleActive: boolean = false;
+  isPaused: boolean = false;
 
-    // Floating damage numbers (for visual effects)
-    this.damageNumbers = []; // Array of {x, y, damage, opacity, isHeal}
+  // Attack timing (attacks every 1 second)
+  attackInterval: number = 1000; // milliseconds
+  timeSinceLastAttack: number = 0;
 
-    // References to other systems (set externally)
-    this.adventureLog = null; // AdventureLog instance
-    this.skillManager = null; // SkillManager instance
-  }
+  // Floating damage numbers (for visual effects)
+  damageNumbers: DamageNumber[] = [];
+
+  // References to other systems (set externally)
+  adventureLog: AdventureLog | null = null;
+  skillManager: SkillManager | null = null;
 
   /**
    * Start a new battle in horde mode
    *
-   * @param {Hero} hero - The player's hero
-   * @param {number} stageLevel - Stage to fight
+   * @param hero - The player's hero
+   * @param stageLevel - Stage to fight
    */
-  startBattle(hero, stageLevel) {
+  startBattle(hero: Hero, stageLevel: number): void {
     // Store references
     this.hero = hero;
     this.currentStage = stageLevel;
@@ -75,7 +80,7 @@ class BattleManager {
    * Spawn a new wave of enemies
    * Fills enemy array up to maxEnemies
    */
-  spawnWave() {
+  spawnWave(): void {
     while (this.enemies.length < this.maxEnemies) {
       const enemy = this.createEnemyForStage(this.currentStage);
       this.enemies.push(enemy);
@@ -90,10 +95,10 @@ class BattleManager {
   /**
    * Create a single enemy for the current stage
    *
-   * @param {number} stageLevel - The stage level
-   * @returns {Enemy} New enemy
+   * @param stageLevel - The stage level
+   * @returns New enemy
    */
-  createEnemyForStage(stageLevel) {
+  createEnemyForStage(stageLevel: number): Enemy {
     // Base stats
     const baseHealth = 200;
     const baseAttack = 25;
@@ -109,22 +114,22 @@ class BattleManager {
     const defense = Math.floor(baseDefense * defenseMultiplier);
 
     // Determine enemy type based on stage
-    let enemyType = 'Goblin';
+    let enemyType: EnemyType = 'Goblin';
     if (stageLevel <= 2) enemyType = 'Goblin';
     else if (stageLevel <= 5) enemyType = 'Orc';
     else if (stageLevel <= 8) enemyType = 'Skeleton';
     else if (stageLevel <= 12) enemyType = 'Demon';
     else enemyType = 'Dragon';
 
-    return new Enemy(this.enemies.length, enemyType, health, attack, defense);
+    return new EnemyClass(this.enemies.length, enemyType, health, attack, defense);
   }
 
   /**
    * Update battle state (called every frame)
    *
-   * @param {number} deltaTime - Time since last update in milliseconds
+   * @param deltaTime - Time since last update in milliseconds
    */
-  update(deltaTime) {
+  update(deltaTime: number): void {
     if (!this.isBattleActive || this.isPaused || !this.hero) {
       return;
     }
@@ -138,8 +143,8 @@ class BattleManager {
     this.timeSinceLastAttack += deltaTime;
 
     // Get speed multiplier from global game object
-    const speed = (typeof window !== 'undefined' && window.game && window.game.speedMultiplier)
-      ? window.game.speedMultiplier
+    const speed = (typeof window !== 'undefined' && (window as any).game && (window as any).game.speedMultiplier)
+      ? (window as any).game.speedMultiplier
       : 1;
     const effectiveInterval = this.attackInterval / speed;
 
@@ -164,9 +169,9 @@ class BattleManager {
   /**
    * Execute one round of attacks
    */
-  executeRound() {
+  executeRound(): void {
     // Hero auto-attacks
-    if (this.hero.isAlive()) {
+    if (this.hero && this.hero.isAlive()) {
       this.heroAttack(this.hero);
     }
 
@@ -181,9 +186,9 @@ class BattleManager {
   /**
    * Hero attacks a random living enemy
    *
-   * @param {Hero} hero - The hero
+   * @param hero - The hero
    */
-  heroAttack(hero) {
+  heroAttack(hero: Hero): void {
     // Get all living enemies
     const aliveEnemies = this.enemies.filter(e => e.isAlive());
 
@@ -214,10 +219,10 @@ class BattleManager {
   /**
    * Enemy attacks the hero
    *
-   * @param {Enemy} enemy - Attacking enemy
+   * @param enemy - Attacking enemy
    */
-  enemyAttack(enemy) {
-    if (!this.hero.isAlive()) {
+  enemyAttack(enemy: Enemy): void {
+    if (!this.hero || !this.hero.isAlive()) {
       return; // Hero dead
     }
 
@@ -241,7 +246,7 @@ class BattleManager {
   /**
    * Check for defeated enemies and respawn new ones
    */
-  checkEnemyRespawn() {
+  checkEnemyRespawn(): void {
     // Remove dead enemies and count defeats
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       if (!this.enemies[i].isAlive()) {
@@ -268,7 +273,9 @@ class BattleManager {
   /**
    * Respawn hero when defeated
    */
-  respawnHero() {
+  respawnHero(): void {
+    if (!this.hero) return;
+
     this.hero.heal();
 
     if (this.adventureLog) {
@@ -281,12 +288,12 @@ class BattleManager {
   /**
    * Create a floating damage number for visual effect
    *
-   * @param {number} x - X position
-   * @param {number} y - Y position
-   * @param {number} damage - Damage/heal amount
-   * @param {boolean} isHeal - True if healing (green), false if damage (red/white)
+   * @param x - X position
+   * @param y - Y position
+   * @param damage - Damage/heal amount
+   * @param isHeal - True if healing (green), false if damage (red/white)
    */
-  createDamageNumber(x, y, damage, isHeal) {
+  createDamageNumber(x: number, y: number, damage: number, isHeal: boolean): void {
     this.damageNumbers.push({
       x: x,
       y: y - 20, // Start above the character
@@ -301,9 +308,9 @@ class BattleManager {
   /**
    * Update floating damage numbers (make them float up and fade out)
    *
-   * @param {number} deltaTime - Time since last update
+   * @param deltaTime - Time since last update
    */
-  updateDamageNumbers(deltaTime) {
+  updateDamageNumbers(deltaTime: number): void {
     this.damageNumbers = this.damageNumbers.filter(num => {
       num.lifetime += deltaTime;
 
@@ -321,32 +328,32 @@ class BattleManager {
   /**
    * Pause/unpause the battle
    */
-  togglePause() {
+  togglePause(): void {
     this.isPaused = !this.isPaused;
   }
 
   /**
    * Check if battle is paused
    *
-   * @returns {boolean}
+   * @returns boolean
    */
-  getPauseState() {
+  getPauseState(): boolean {
     return this.isPaused;
   }
 
   /**
    * Get damage numbers for rendering
    *
-   * @returns {Array}
+   * @returns Array of damage numbers
    */
-  getDamageNumbers() {
+  getDamageNumbers(): DamageNumber[] {
     return this.damageNumbers;
   }
 
   /**
    * Stop battle
    */
-  stopBattle() {
+  stopBattle(): void {
     this.isBattleActive = false;
   }
 }
