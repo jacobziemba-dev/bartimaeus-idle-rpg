@@ -23,7 +23,20 @@ A simplified AFK Arena-style idle RPG game with auto-battling heroes, idle resou
 
 ## 🌐 Deploy to GitHub Pages
 
-### Step 1: Create GitHub Repository
+This repository includes a GitHub Actions workflow that **automatically deploys** to GitHub Pages when you push to the `main` branch!
+
+### Quick Setup (One-Time)
+
+1. Go to your repository on GitHub
+2. Click **Settings** → **Pages**
+3. Under "Source", select **GitHub Actions**
+4. Click **Save**
+
+That's it! Your game will automatically deploy when you push changes to the `main` branch.
+
+### Manual Deployment Steps (if starting from scratch)
+
+#### Step 1: Create GitHub Repository
 
 ```bash
 # In this folder, run:
@@ -32,7 +45,7 @@ git add .
 git commit -m "Initial commit: Bartimaeus Idle RPG"
 ```
 
-### Step 2: Push to GitHub
+#### Step 2: Push to GitHub
 
 ```bash
 # Create a new repository on GitHub (name it "bartimaeus-idle-rpg")
@@ -42,14 +55,22 @@ git branch -M main
 git push -u origin main
 ```
 
-### Step 3: Enable GitHub Pages
+#### Step 3: Configure GitHub Pages
 
 1. Go to your repository on GitHub
 2. Click **Settings** → **Pages**
-3. Under "Source", select **main** branch
-4. Click **Save**
-5. Wait 1-2 minutes
+3. Under "Source", select **GitHub Actions**
+4. The workflow will run automatically and deploy your site
+5. Wait 1-2 minutes for the deployment to complete
 6. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
+
+### Manual Deployment Trigger
+
+You can also manually trigger a deployment:
+1. Go to **Actions** tab in your repository
+2. Click on "Deploy to GitHub Pages" workflow
+3. Click **Run workflow** button
+4. Select the `main` branch and click **Run workflow**
 
 ## 📁 Project Structure
 
