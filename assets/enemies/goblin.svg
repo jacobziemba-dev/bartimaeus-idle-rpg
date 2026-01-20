@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" width="60" height="80">
+  <!-- Body -->
+  <ellipse cx="30" cy="50" rx="12" ry="16" fill="#84cc16" stroke="#65a30d" stroke-width="1.5"/>
+
+  <!-- Raggedy clothes -->
+  <ellipse cx="30" cy="50" rx="10" ry="14" fill="#78716c" opacity="0.5"/>
+  <path d="M 20 45 L 18 55 L 22 56 Z" fill="#57534e"/>
+  <path d="M 40 45 L 42 55 L 38 56 Z" fill="#57534e"/>
+
+  <!-- Arms -->
+  <ellipse cx="20" cy="50" rx="4" ry="10" fill="#84cc16" stroke="#65a30d" stroke-width="1"/>
+  <ellipse cx="40" cy="50" rx="4" ry="10" fill="#84cc16" stroke="#65a30d" stroke-width="1"/>
+
+  <!-- Holding club -->
+  <rect x="38" y="55" width="4" height="18" fill="#8b4513" rx="1"/>
+  <ellipse cx="40" cy="73" rx="5" ry="4" fill="#654321"/>
+
+  <!-- Head -->
+  <ellipse cx="30" cy="28" rx="11" ry="13" fill="#84cc16" stroke="#65a30d" stroke-width="1.5"/>
+
+  <!-- Large pointed ears -->
+  <ellipse cx="18" cy="25" rx="5" ry="8" fill="#84cc16" stroke="#65a30d" stroke-width="1"/>
+  <ellipse cx="42" cy="25" rx="5" ry="8" fill="#84cc16" stroke="#65a30d" stroke-width="1"/>
+
+  <!-- Eyes (beady and evil) -->
+  <ellipse cx="26" cy="26" rx="3" ry="4" fill="#fef08a"/>
+  <circle cx="26" cy="27" r="2" fill="#1f2937"/>
+  <ellipse cx="34" cy="26" rx="3" ry="4" fill="#fef08a"/>
+  <circle cx="34" cy="27" r="2" fill="#1f2937"/>
+
+  <!-- Nose -->
+  <ellipse cx="30" cy="32" rx="2" ry="3" fill="#65a30d"/>
+
+  <!-- Mouth (crooked grin) -->
+  <path d="M 24 35 Q 30 38 36 35" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="26" cy="36" r="0.8" fill="#ffffff"/>
+  <circle cx="34" cy="36" r="0.8" fill="#ffffff"/>
+
+  <!-- Legs (short and stumpy) -->
+  <rect x="24" y="64" width="5" height="14" fill="#84cc16" rx="1.5"/>
+  <rect x="31" y="64" width="5" height="14" fill="#84cc16" rx="1.5"/>
+  <ellipse cx="26.5" cy="78" rx="3" ry="2" fill="#65a30d"/>
+  <ellipse cx="33.5" cy="78" rx="3" ry="2" fill="#65a30d"/>
+</svg>

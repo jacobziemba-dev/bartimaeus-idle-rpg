@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" preserveAspectRatio="xMidYMid slice">
+  <!-- Volcano/hellscape background -->
+
+  <!-- Dark red sky -->
+  <defs>
+    <linearGradient id="hellSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#450a0a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7f1d1d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lavaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="400" fill="url(#hellSky)"/>
+
+  <!-- Distant volcano silhouette -->
+  <path d="M 250 200 L 350 50 L 450 200 L 250 200" fill="#1c0a00" opacity="0.8"/>
+  <path d="M 345 50 L 350 40 L 355 50" fill="#ff6600" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Lava flow from volcano -->
+  <path d="M 350 50 Q 330 100 310 200" fill="none" stroke="#ff6600" stroke-width="4" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Rocky mountains -->
+  <path d="M 0 250 L 100 180 L 200 220 L 300 190 L 400 240 L 500 200 L 600 230 L 700 190 L 800 240 L 800 400 L 0 400 Z" fill="#3f1f1f" opacity="0.9"/>
+
+  <!-- Jagged rocks -->
+  <path d="M 80 270 L 100 240 L 120 270" fill="#57534e" stroke="#1c1917" stroke-width="1"/>
+  <path d="M 200 280 L 220 250 L 240 280" fill="#57534e" stroke="#1c1917" stroke-width="1"/>
+  <path d="M 350 275 L 370 245 L 390 275" fill="#57534e" stroke="#1c1917" stroke-width="1"/>
+  <path d="M 520 285 L 540 255 L 560 285" fill="#57534e" stroke="#1c1917" stroke-width="1"/>
+  <path d="M 680 278 L 700 248 L 720 278" fill="#57534e" stroke="#1c1917" stroke-width="1"/>
+
+  <!-- Ground (dark rock) -->
+  <rect x="0" y="320" width="800" height="80" fill="#1c0a00"/>
+
+  <!-- Lava cracks in ground -->
+  <path d="M 50 320 L 70 350 L 60 380" stroke="url(#lavaGrad)" stroke-width="3" fill="none">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 250 325 L 270 345 L 265 370 L 280 390" stroke="url(#lavaGrad)" stroke-width="3" fill="none">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 480 322 L 500 340 L 495 365" stroke="url(#lavaGrad)" stroke-width="3" fill="none">
+    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2.2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 680 328 L 700 350 L 690 375 L 705 395" stroke="url(#lavaGrad)" stroke-width="3" fill="none">
+    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2.8s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Lava pools -->
+  <ellipse cx="150" cy="360" rx="30" ry="15" fill="url(#lavaGrad)" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.5;0.8" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="600" cy="365" rx="35" ry="18" fill="url(#lavaGrad)" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="3.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Smoke/ash particles -->
+  <circle cx="350" cy="80" r="4" fill="#78716c" opacity="0.4">
+    <animate attributeName="cy" values="80;20" dur="6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0;0.4" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="340" cy="100" r="3" fill="#78716c" opacity="0.5">
+    <animate attributeName="cy" values="100;40" dur="5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0;0.5" dur="5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="360" cy="90" r="5" fill="#78716c" opacity="0.3">
+    <animate attributeName="cy" values="90;30" dur="7s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0;0.3" dur="7s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Ambient hellish glow -->
+  <rect x="0" y="0" width="800" height="400" fill="#ff0000" opacity="0.08">
+    <animate attributeName="opacity" values="0.08;0.04;0.08" dur="4s" repeatCount="indefinite"/>
+  </rect>
+</svg>

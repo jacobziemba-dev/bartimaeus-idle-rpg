@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#2a1a0a" stroke="#ff6600" stroke-width="2"/>
+
+  <!-- Fireball flame -->
+  <ellipse cx="32" cy="35" rx="18" ry="22" fill="#ff3300" opacity="0.9"/>
+  <ellipse cx="32" cy="33" rx="14" ry="18" fill="#ff6600" opacity="0.9"/>
+  <ellipse cx="32" cy="31" rx="10" ry="14" fill="#ffaa00" opacity="0.9"/>
+  <ellipse cx="32" cy="29" rx="6" ry="10" fill="#ffdd00"/>
+
+  <!-- Fire sparks -->
+  <circle cx="24" cy="28" r="2" fill="#ffff66">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="40" cy="26" r="2" fill="#ffff66">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="32" cy="20" r="2.5" fill="#ffff99">
+    <animate attributeName="opacity" values="1;0.5;1" dur="0.8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Glow effect -->
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#ff8800" stroke-width="1" opacity="0.3"/>
+</svg>

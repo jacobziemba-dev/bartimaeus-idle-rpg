@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" preserveAspectRatio="xMidYMid slice">
+  <!-- Dark dungeon background -->
+
+  <!-- Dark background -->
+  <rect x="0" y="0" width="800" height="400" fill="#1a1a1a"/>
+
+  <!-- Stone wall -->
+  <rect x="0" y="0" width="800" height="300" fill="#3f3f46"/>
+
+  <!-- Wall stones (random pattern) -->
+  <rect x="20" y="40" width="80" height="50" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="110" y="35" width="90" height="55" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="210" y="45" width="75" height="48" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="295" y="38" width="85" height="53" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="390" y="42" width="95" height="51" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="495" y="36" width="78" height="54" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="583" y="44" width="88" height="49" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="680" y="39" width="82" height="52" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+
+  <rect x="15" y="100" width="90" height="60" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="115" y="105" width="85" height="55" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="210" y="98" width="95" height="58" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="315" y="103" width="80" height="53" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="405" y="100" width="88" height="57" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="503" y="106" width="92" height="51" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="605" y="99" width="87" height="59" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+  <rect x="702" y="104" width="83" height="54" fill="#52525b" stroke="#27272a" stroke-width="2"/>
+
+  <!-- Torch on left wall -->
+  <rect x="100" y="140" width="8" height="60" fill="#78350f" rx="2"/>
+  <ellipse cx="104" cy="135" rx="12" ry="20" fill="#ff6600" opacity="0.8">
+    <animate attributeName="ry" values="20;24;20" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.6;0.8" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="104" cy="130" rx="10" ry="16" fill="#ffaa00" opacity="0.9">
+    <animate attributeName="ry" values="16;19;16" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="104" cy="125" rx="6" ry="10" fill="#ffff00">
+    <animate attributeName="ry" values="10;13;10" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Torch on right wall -->
+  <rect x="692" y="140" width="8" height="60" fill="#78350f" rx="2"/>
+  <ellipse cx="696" cy="135" rx="12" ry="20" fill="#ff6600" opacity="0.8">
+    <animate attributeName="ry" values="22;18;22" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.9;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="696" cy="130" rx="10" ry="16" fill="#ffaa00" opacity="0.9">
+    <animate attributeName="ry" values="17;14;17" dur="1.8s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="696" cy="125" rx="6" ry="10" fill="#ffff00">
+    <animate attributeName="ry" values="11;9;11" dur="1.8s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Floor -->
+  <rect x="0" y="300" width="800" height="100" fill="#27272a"/>
+
+  <!-- Floor tiles -->
+  <line x1="0" y1="320" x2="800" y2="320" stroke="#18181b" stroke-width="2"/>
+  <line x1="0" y1="350" x2="800" y2="350" stroke="#18181b" stroke-width="2"/>
+  <line x1="0" y1="380" x2="800" y2="380" stroke="#18181b" stroke-width="2"/>
+
+  <line x1="100" y1="300" x2="100" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="200" y1="300" x2="200" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="300" y1="300" x2="300" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="400" y1="300" x2="400" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="500" y1="300" x2="500" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="600" y1="300" x2="600" y2="400" stroke="#18181b" stroke-width="2"/>
+  <line x1="700" y1="300" x2="700" y2="400" stroke="#18181b" stroke-width="2"/>
+
+  <!-- Atmospheric lighting glow from torches -->
+  <ellipse cx="104" cy="200" rx="100" ry="150" fill="#ff6600" opacity="0.1"/>
+  <ellipse cx="696" cy="200" rx="100" ry="150" fill="#ff6600" opacity="0.1"/>
+
+  <!-- Cobwebs -->
+  <path d="M 50 20 Q 60 30 70 25 Q 65 40 55 45" fill="none" stroke="#d4d4d8" stroke-width="1" opacity="0.3"/>
+  <path d="M 750 15 Q 740 28 730 22 Q 735 38 745 42" fill="none" stroke="#d4d4d8" stroke-width="1" opacity="0.3"/>
+</svg>

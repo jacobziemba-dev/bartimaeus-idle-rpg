@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#1a1a2a" stroke="#cc0000" stroke-width="2"/>
+
+  <!-- Sword blade -->
+  <path d="M 15 45 L 28 20 L 32 22 L 19 47 Z" fill="#c0c0c0" stroke="#888888" stroke-width="1"/>
+  <path d="M 28 20 L 32 22 L 33 21 L 29 19 Z" fill="#888888"/>
+
+  <!-- Middle sword (centered) -->
+  <path d="M 27 48 L 32 18 L 36 18 L 31 48 Z" fill="#e0e0e0" stroke="#888888" stroke-width="1"/>
+  <path d="M 32 18 L 36 18 L 37 16 L 33 16 Z" fill="#aaaaaa"/>
+
+  <!-- Right sword -->
+  <path d="M 36 22 L 49 45 L 45 47 L 32 24 Z" fill="#c0c0c0" stroke="#888888" stroke-width="1"/>
+  <path d="M 36 22 L 32 24 L 31 23 L 35 21 Z" fill="#888888"/>
+
+  <!-- Slash effect -->
+  <path d="M 12 42 Q 32 28 52 42" fill="none" stroke="#ff0000" stroke-width="3" opacity="0.6" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 14 38 Q 32 24 50 38" fill="none" stroke="#ffcccc" stroke-width="2" opacity="0.4" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Guard/hilt elements -->
+  <rect x="30" y="47" width="4" height="4" fill="#664400" stroke="#442200" stroke-width="0.5"/>
+  <rect x="15" y="46" width="4" height="3" fill="#664400" stroke="#442200" stroke-width="0.5"/>
+  <rect x="45" y="46" width="4" height="3" fill="#664400" stroke="#442200" stroke-width="0.5"/>
+</svg>

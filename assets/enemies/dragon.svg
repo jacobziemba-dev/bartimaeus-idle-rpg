@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Tail -->
+  <path d="M 70 65 Q 85 70 90 80 Q 92 85 95 83" stroke="#f97316" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M 70 65 Q 85 70 90 80 Q 92 85 95 83" stroke="#fb923c" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M 92 80 L 98 78 L 95 85 Z" fill="#ea580c"/>
+
+  <!-- Back leg -->
+  <ellipse cx="65" cy="72" rx="8" ry="14" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <ellipse cx="65" cy="85" rx="6" ry="4" fill="#c2410c"/>
+  <path d="M 62 88 L 60 92 M 65 88 L 65 93 M 68 88 L 70 92" stroke="#7c2d12" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Body (large and imposing) -->
+  <ellipse cx="50" cy="60" rx="20" ry="24" fill="#f97316" stroke="#ea580c" stroke-width="2"/>
+  <ellipse cx="50" cy="60" rx="16" ry="20" fill="#fb923c" opacity="0.6"/>
+
+  <!-- Dragon scales -->
+  <circle cx="45" cy="52" r="3" fill="#ea580c" opacity="0.5"/>
+  <circle cx="52" cy="55" r="3" fill="#ea580c" opacity="0.5"/>
+  <circle cx="48" cy="60" r="3" fill="#ea580c" opacity="0.5"/>
+  <circle cx="55" cy="63" r="3" fill="#ea580c" opacity="0.5"/>
+  <circle cx="45" cy="67" r="3" fill="#ea580c" opacity="0.5"/>
+
+  <!-- Wing (left) -->
+  <path d="M 35 50 Q 15 45 10 35 Q 8 30 12 32 Q 18 38 25 42 Q 30 45 35 48 Z"
+        fill="#dc2626" stroke="#991b1b" stroke-width="1.5" opacity="0.8"/>
+  <path d="M 30 46 Q 18 42 14 36" stroke="#7f1d1d" stroke-width="1" fill="none"/>
+  <path d="M 28 44 Q 20 40 17 35" stroke="#7f1d1d" stroke-width="1" fill="none"/>
+
+  <!-- Chest/belly (lighter) -->
+  <ellipse cx="50" cy="65" rx="12" ry="14" fill="#fed7aa" opacity="0.7"/>
+  <line x1="44" y1="58" x2="56" y2="58" stroke="#fdba74" stroke-width="1" opacity="0.5"/>
+  <line x1="43" y1="62" x2="57" y2="62" stroke="#fdba74" stroke-width="1" opacity="0.5"/>
+  <line x1="44" y1="66" x2="56" y2="66" stroke="#fdba74" stroke-width="1" opacity="0.5"/>
+  <line x1="45" y1="70" x2="55" y2="70" stroke="#fdba74" stroke-width="1" opacity="0.5"/>
+
+  <!-- Front leg -->
+  <ellipse cx="42" cy="75" rx="7" ry="12" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <ellipse cx="42" cy="86" rx="5" ry="3" fill="#c2410c"/>
+  <path d="M 39 88 L 37 92 M 42 88 L 42 93 M 45 88 L 47 92" stroke="#7c2d12" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Neck -->
+  <path d="M 45 48 Q 42 38 40 28" stroke="#f97316" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M 45 48 Q 42 38 40 28" stroke="#fb923c" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+  <!-- Head (fierce) -->
+  <ellipse cx="38" cy="22" rx="12" ry="10" fill="#f97316" stroke="#ea580c" stroke-width="2"/>
+
+  <!-- Snout -->
+  <ellipse cx="30" cy="24" rx="8" ry="6" fill="#fb923c" stroke="#ea580c" stroke-width="1.5"/>
+
+  <!-- Nostrils -->
+  <ellipse cx="26" cy="24" rx="2" ry="1.5" fill="#7c2d12"/>
+  <ellipse cx="26" cy="27" rx="2" ry="1.5" fill="#7c2d12"/>
+
+  <!-- Fire breath (animated) -->
+  <path d="M 20 25 Q 12 25 8 24" stroke="#ff6600" stroke-width="3" opacity="0.7" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 18 25 Q 10 24 5 22" stroke="#ffaa00" stroke-width="2" opacity="0.6" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Eye (fierce) -->
+  <ellipse cx="36" cy="20" rx="4" ry="3" fill="#fef3c7"/>
+  <ellipse cx="37" cy="20" rx="2.5" ry="2" fill="#dc2626">
+    <animate attributeName="fill" values="#dc2626;#ff0000;#dc2626" dur="2s" repeatCount="indefinite"/>
+  </ellipse>
+  <circle cx="38" cy="19.5" r="1" fill="#450a0a"/>
+
+  <!-- Horns -->
+  <path d="M 42 16 L 44 10 L 43 16 Z" fill="#7c2d12" stroke="#431407" stroke-width="1"/>
+  <path d="M 46 15 L 49 9 L 47 15 Z" fill="#7c2d12" stroke="#431407" stroke-width="1"/>
+
+  <!-- Spikes on back -->
+  <path d="M 38 48 L 36 42 L 40 46 Z" fill="#dc2626" opacity="0.8"/>
+  <path d="M 45 50 L 44 44 L 47 48 Z" fill="#dc2626" opacity="0.8"/>
+  <path d="M 52 52 L 52 46 L 54 50 Z" fill="#dc2626" opacity="0.8"/>
+  <path d="M 58 56 L 59 50 L 60 54 Z" fill="#dc2626" opacity="0.8"/>
+
+  <!-- Fearsome aura -->
+  <ellipse cx="50" cy="55" rx="45" ry="40" fill="none" stroke="#f97316" stroke-width="1.5" opacity="0.2">
+    <animate attributeName="rx" values="42;48;42" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="ry" values="38;42;38" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2s" repeatCount="indefinite"/>
+  </ellipse>
+</svg>

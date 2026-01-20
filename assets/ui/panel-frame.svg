@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="200" height="150" preserveAspectRatio="none">
+  <!-- Ornate frame for character/stat panels -->
+  <defs>
+    <linearGradient id="frameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#78716c;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a8a29e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#78716c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background panel -->
+  <rect x="10" y="10" width="180" height="130" fill="#1c1917" stroke="url(#frameGrad)" stroke-width="3" rx="8"/>
+
+  <!-- Inner border decoration -->
+  <rect x="14" y="14" width="172" height="122" fill="none" stroke="#57534e" stroke-width="1" rx="6"/>
+
+  <!-- Corner decorations -->
+  <circle cx="20" cy="20" r="4" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1"/>
+  <circle cx="180" cy="20" r="4" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1"/>
+  <circle cx="20" cy="130" r="4" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1"/>
+  <circle cx="180" cy="130" r="4" fill="#d6d3d1" stroke="#a8a29e" stroke-width="1"/>
+
+  <!-- Ornate corner details -->
+  <path d="M 15 25 L 15 35 M 20 20 L 30 20" stroke="#a8a29e" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M 185 25 L 185 35 M 180 20 L 170 20" stroke="#a8a29e" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M 15 125 L 15 115 M 20 130 L 30 130" stroke="#a8a29e" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M 185 125 L 185 115 M 180 130 L 170 130" stroke="#a8a29e" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

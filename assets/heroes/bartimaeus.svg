@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100" width="80" height="100">
+  <!-- Shield (left hand) -->
+  <ellipse cx="25" cy="60" rx="10" ry="14" fill="#4a5568" stroke="#2d3748" stroke-width="1.5"/>
+  <circle cx="25" cy="60" r="6" fill="#3b82f6" stroke="#2563eb" stroke-width="1"/>
+  <circle cx="25" cy="60" r="3" fill="#60a5fa"/>
+
+  <!-- Body (armored) -->
+  <ellipse cx="40" cy="60" rx="16" ry="24" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+  <ellipse cx="40" cy="60" rx="12" ry="20" fill="#60a5fa" opacity="0.6"/>
+
+  <!-- Armor plating details -->
+  <rect x="32" y="50" width="16" height="4" fill="#2563eb" opacity="0.7" rx="1"/>
+  <rect x="32" y="58" width="16" height="4" fill="#2563eb" opacity="0.7" rx="1"/>
+  <rect x="32" y="66" width="16" height="4" fill="#2563eb" opacity="0.7" rx="1"/>
+
+  <!-- Sword (right hand) -->
+  <line x1="55" y1="50" x2="55" y2="75" stroke="#c0c0c0" stroke-width="3" stroke-linecap="round"/>
+  <line x1="55" y1="50" x2="55" y2="45" stroke="#e0e0e0" stroke-width="4"/>
+  <rect x="52" y="74" width="6" height="4" fill="#8b4513" rx="1"/>
+
+  <!-- Head -->
+  <circle cx="40" cy="30" r="14" fill="#ffd8b0" stroke="#d4a574" stroke-width="1.5"/>
+
+  <!-- Helmet -->
+  <ellipse cx="40" cy="26" rx="15" ry="12" fill="#2563eb" stroke="#1e40af" stroke-width="1.5"/>
+  <ellipse cx="40" cy="26" rx="12" ry="9" fill="#3b82f6" opacity="0.5"/>
+  <rect x="32" y="24" width="16" height="3" fill="#1e40af"/>
+
+  <!-- Helmet visor/eye slit -->
+  <rect x="30" y="28" width="20" height="4" fill="#1e3a8a" rx="1"/>
+  <rect x="32" y="29" width="7" height="2" fill="#fbbf24" opacity="0.8"/>
+  <rect x="41" y="29" width="7" height="2" fill="#fbbf24" opacity="0.8"/>
+
+  <!-- Cape -->
+  <path d="M 28 48 Q 15 55 12 75 L 18 76 Q 22 60 28 54 Z" fill="#1e40af" opacity="0.7"/>
+  <path d="M 52 48 Q 65 55 68 75 L 62 76 Q 58 60 52 54 Z" fill="#1e40af" opacity="0.7"/>
+
+  <!-- Legs -->
+  <rect x="32" y="80" width="7" height="18" fill="#2563eb" rx="2"/>
+  <rect x="41" y="80" width="7" height="18" fill="#2563eb" rx="2"/>
+  <rect x="32" y="94" width="7" height="5" fill="#4a5568" rx="1"/>
+  <rect x="41" y="94" width="7" height="5" fill="#4a5568" rx="1"/>
+
+  <!-- Tank aura effect -->
+  <circle cx="40" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.2">
+    <animate attributeName="r" values="32;38;32" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

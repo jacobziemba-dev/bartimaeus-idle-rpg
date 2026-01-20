@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 85" width="60" height="85">
+  <!-- Ribcage -->
+  <ellipse cx="30" cy="50" rx="12" ry="16" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="22" y1="42" x2="38" y2="42" stroke="#e5e7eb" stroke-width="1.5"/>
+  <line x1="22" y1="46" x2="38" y2="46" stroke="#e5e7eb" stroke-width="1.5"/>
+  <line x1="22" y1="50" x2="38" y2="50" stroke="#e5e7eb" stroke-width="1.5"/>
+  <line x1="22" y1="54" x2="38" y2="54" stroke="#e5e7eb" stroke-width="1.5"/>
+  <line x1="22" y1="58" x2="38" y2="58" stroke="#e5e7eb" stroke-width="1.5"/>
+
+  <!-- Spine -->
+  <line x1="30" y1="35" x2="30" y2="65" stroke="#e5e7eb" stroke-width="2.5"/>
+  <circle cx="30" cy="38" r="1.5" fill="#d1d5db"/>
+  <circle cx="30" cy="42" r="1.5" fill="#d1d5db"/>
+  <circle cx="30" cy="46" r="1.5" fill="#d1d5db"/>
+  <circle cx="30" cy="50" r="1.5" fill="#d1d5db"/>
+  <circle cx="30" cy="54" r="1.5" fill="#d1d5db"/>
+  <circle cx="30" cy="58" r="1.5" fill="#d1d5db"/>
+
+  <!-- Pelvis -->
+  <ellipse cx="30" cy="65" rx="10" ry="5" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Arms (bone) -->
+  <line x1="18" y1="40" x2="12" y2="50" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="12" y1="50" x2="10" y2="58" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="42" y1="40" x2="48" y2="50" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="50" x2="50" y2="58" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Hands (bony) -->
+  <ellipse cx="9" cy="60" rx="3" ry="2" fill="#e5e7eb"/>
+  <line x1="7" y1="60" x2="5" y2="63" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="9" y1="60" x2="8" y2="64" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="11" y1="60" x2="11" y2="64" stroke="#e5e7eb" stroke-width="1"/>
+
+  <ellipse cx="51" cy="60" rx="3" ry="2" fill="#e5e7eb"/>
+  <line x1="49" y1="60" x2="49" y2="64" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="51" y1="60" x2="52" y2="64" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="53" y1="60" x2="55" y2="63" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Old rusty sword -->
+  <line x1="52" y1="58" x2="52" y2="72" stroke="#9ca3af" stroke-width="2.5"/>
+  <rect x="49" y="56" width="6" height="3" fill="#78716c" rx="0.5"/>
+
+  <!-- Skull -->
+  <ellipse cx="30" cy="22" rx="11" ry="13" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Eye sockets (dark and hollow) -->
+  <ellipse cx="26" cy="20" rx="4" ry="5" fill="#374151"/>
+  <ellipse cx="34" cy="20" rx="4" ry="5" fill="#374151"/>
+
+  <!-- Glowing eyes in sockets -->
+  <circle cx="26" cy="21" r="2" fill="#ef4444" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="34" cy="21" r="2" fill="#ef4444" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Nose cavity -->
+  <path d="M 28 25 L 30 27 L 32 25 L 30 23 Z" fill="#6b7280"/>
+
+  <!-- Teeth (creepy grin) -->
+  <line x1="22" y1="30" x2="38" y2="30" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="23" y1="28" x2="23" y2="32" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="26" y1="28" x2="26" y2="32" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="29" y1="28" x2="29" y2="32" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="32" y1="28" x2="32" y2="32" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="35" y1="28" x2="35" y2="32" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="38" y1="28" x2="38" y2="32" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Legs (bone) -->
+  <line x1="26" y1="68" x2="24" y2="78" stroke="#e5e7eb" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="24" y1="78" x2="22" y2="83" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="34" y1="68" x2="36" y2="78" stroke="#e5e7eb" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="36" y1="78" x2="38" y2="83" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Feet (bones) -->
+  <ellipse cx="22" cy="84" rx="4" ry="2" fill="#e5e7eb"/>
+  <ellipse cx="38" cy="84" rx="4" ry="2" fill="#e5e7eb"/>
+</svg>

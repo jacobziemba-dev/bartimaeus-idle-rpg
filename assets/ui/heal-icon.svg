@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#0a2a0a" stroke="#00ff00" stroke-width="2"/>
+
+  <!-- Heart shape -->
+  <path d="M 32 45 C 32 45, 20 35, 20 28 C 20 23, 23 20, 27 20 C 29 20, 31 21, 32 23 C 33 21, 35 20, 37 20 C 41 20, 44 23, 44 28 C 44 35, 32 45, 32 45 Z"
+        fill="#00ff00" stroke="#00cc00" stroke-width="1.5">
+    <animate attributeName="opacity" values="1;0.7;1" dur="1.2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Inner heart glow -->
+  <path d="M 32 42 C 32 42, 23 34, 23 28 C 23 24.5, 25 22, 28 22 C 29.5 22, 31 23, 32 24.5 C 33 23, 34.5 22, 36 22 C 39 22, 41 24.5, 41 28 C 41 34, 32 42, 32 42 Z"
+        fill="#66ff66" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="1.2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Cross inside heart -->
+  <rect x="30.5" y="25" width="3" height="12" fill="#ffffff" opacity="0.9" rx="0.5"/>
+  <rect x="26" y="29.5" width="12" height="3" fill="#ffffff" opacity="0.9" rx="0.5"/>
+
+  <!-- Sparkle effects -->
+  <circle cx="22" cy="24" r="1.5" fill="#ccffcc">
+    <animate attributeName="r" values="1.5;2.5;1.5" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="42" cy="24" r="1.5" fill="#ccffcc">
+    <animate attributeName="r" values="2;1.5;2" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="32" cy="18" r="2" fill="#ffffff">
+    <animate attributeName="r" values="1.5;2.5;1.5" dur="1.3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="1.3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Healing aura rings -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#00ff00" stroke-width="1" opacity="0.2">
+    <animate attributeName="r" values="22;28;22" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

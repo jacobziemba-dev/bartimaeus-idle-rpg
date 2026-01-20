@@ -12,26 +12,35 @@ class AssetManager {
     // Asset manifest - maps category -> name -> file path
     this.manifest = {
       backgrounds: {
-        forest: 'assets/backgrounds/forest.png',
-        cave: 'assets/backgrounds/cave.png',
-        ruins: 'assets/backgrounds/ruins.png'
+        forest: 'assets/backgrounds/forest.svg',
+        dungeon: 'assets/backgrounds/dungeon.svg',
+        volcano: 'assets/backgrounds/volcano.svg',
+        castle: 'assets/backgrounds/castle.svg'
       },
       heroes: {
-        bartimaeus: 'assets/heroes/bartimaeus.png'
+        bartimaeus: 'assets/heroes/bartimaeus.svg'
       },
       enemies: {
-        slime: 'assets/enemies/slime.png',
-        goblin: 'assets/enemies/goblin.png',
-        orc: 'assets/enemies/orc.png',
-        skeleton: 'assets/enemies/skeleton.png',
-        demon: 'assets/enemies/demon.png',
-        dragon: 'assets/enemies/dragon.png'
+        goblin: 'assets/enemies/goblin.svg',
+        orc: 'assets/enemies/orc.svg',
+        skeleton: 'assets/enemies/skeleton.svg',
+        demon: 'assets/enemies/demon.svg',
+        dragon: 'assets/enemies/dragon.svg'
       },
       ui: {
-        portrait: 'assets/ui/bartimaeus_portrait.png',
-        skill_fireball: 'assets/ui/skill_icons/fireball.png',
-        skill_cleave: 'assets/ui/skill_icons/cleave.png',
-        skill_heal: 'assets/ui/skill_icons/heal.png'
+        // Skill icons
+        skill_fireball: 'assets/ui/fireball-icon.svg',
+        skill_cleave: 'assets/ui/cleave-icon.svg',
+        skill_heal: 'assets/ui/heal-icon.svg',
+
+        // UI elements
+        button_upgrade: 'assets/ui/button-upgrade.svg',
+        panel_frame: 'assets/ui/panel-frame.svg',
+        healthbar_bg: 'assets/ui/healthbar-background.svg',
+        healthbar_fill_green: 'assets/ui/healthbar-fill-green.svg',
+        healthbar_fill_red: 'assets/ui/healthbar-fill-red.svg',
+        gold_coin: 'assets/ui/gold-coin.svg',
+        gem_icon: 'assets/ui/gem-icon.svg'
       }
     };
   }

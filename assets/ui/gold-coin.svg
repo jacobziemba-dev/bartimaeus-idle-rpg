@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Gold coin icon -->
+  <defs>
+    <radialGradient id="coinGrad">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Coin body -->
+  <circle cx="16" cy="16" r="14" fill="url(#coinGrad)" stroke="#92400e" stroke-width="1.5"/>
+
+  <!-- Inner circle detail -->
+  <circle cx="16" cy="16" r="11" fill="none" stroke="#b45309" stroke-width="1"/>
+  <circle cx="16" cy="16" r="9" fill="none" stroke="#fde68a" stroke-width="0.5" opacity="0.7"/>
+
+  <!-- "$" or coin symbol -->
+  <text x="16" y="22" font-family="serif" font-size="18" font-weight="bold" fill="#92400e" text-anchor="middle">$</text>
+
+  <!-- Shine effect -->
+  <ellipse cx="12" cy="10" rx="4" ry="6" fill="#fffbeb" opacity="0.6"/>
+  <circle cx="10" cy="8" r="2" fill="#ffffff" opacity="0.8"/>
+</svg>

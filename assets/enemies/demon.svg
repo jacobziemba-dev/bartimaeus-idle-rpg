@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 95" width="70" height="95">
+  <!-- Demonic tail -->
+  <path d="M 35 70 Q 50 75 55 85 Q 56 88 58 86" fill="none" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 56 84 L 62 82 L 58 88 Z" fill="#7c3aed"/>
+
+  <!-- Body (dark and shadowy) -->
+  <ellipse cx="35" cy="55" rx="15" ry="20" fill="#7c3aed" stroke="#5b21b6" stroke-width="2"/>
+  <ellipse cx="35" cy="55" rx="12" ry="16" fill="#6d28d9" opacity="0.7"/>
+
+  <!-- Dark energy wisps -->
+  <path d="M 20 50 Q 15 52 18 56" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0.6">
+    <animate attributeName="d" values="M 20 50 Q 15 52 18 56;M 20 50 Q 12 54 18 56;M 20 50 Q 15 52 18 56" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 50 50 Q 55 52 52 56" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0.6">
+    <animate attributeName="d" values="M 50 50 Q 55 52 52 56;M 50 50 Q 58 54 52 56;M 50 50 Q 55 52 52 56" dur="2.3s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Arms (claw-like) -->
+  <path d="M 20 50 L 15 55 L 12 58" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M 50 50 L 55 55 L 58 58" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+  <!-- Claws -->
+  <path d="M 10 56 L 8 60 M 11 57 L 9 61 M 13 58 L 12 62" stroke="#d8b4fe" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M 60 56 L 62 60 M 59 57 L 61 61 M 57 58 L 58 62" stroke="#d8b4fe" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Head (menacing) -->
+  <ellipse cx="35" cy="30" rx="13" ry="15" fill="#7c3aed" stroke="#5b21b6" stroke-width="2"/>
+
+  <!-- Horns -->
+  <path d="M 24 22 Q 20 18 18 12 Q 19 10 22 14" fill="#4c1d95" stroke="#5b21b6" stroke-width="1.5"/>
+  <path d="M 46 22 Q 50 18 52 12 Q 51 10 48 14" fill="#4c1d95" stroke="#5b21b6" stroke-width="1.5"/>
+  <ellipse cx="19" cy="13" rx="2" ry="3" fill="#d8b4fe"/>
+  <ellipse cx="51" cy="13" rx="2" ry="3" fill="#d8b4fe"/>
+
+  <!-- Eyes (glowing) -->
+  <ellipse cx="30" cy="28" rx="4" ry="5" fill="#fef3c7"/>
+  <ellipse cx="30" cy="28" rx="3" ry="4" fill="#fbbf24">
+    <animate attributeName="opacity" values="1;0.6;1" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="40" cy="28" rx="4" ry="5" fill="#fef3c7"/>
+  <ellipse cx="40" cy="28" rx="3" ry="4" fill="#fbbf24">
+    <animate attributeName="opacity" values="1;0.6;1" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Nose -->
+  <path d="M 33 33 L 35 37 L 37 33" fill="#6d28d9"/>
+
+  <!-- Mouth (wicked grin with fangs) -->
+  <path d="M 26 40 Q 35 44 44 40" fill="#1e1b4b" stroke="#5b21b6" stroke-width="1"/>
+  <path d="M 30 40 L 29 44 M 40 40 L 41 44" stroke="#f5f5dc" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Legs (digitigrade) -->
+  <path d="M 28 74 L 26 82 L 24 88" stroke="#7c3aed" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M 42 74 L 44 82 L 46 88" stroke="#7c3aed" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- Hooves -->
+  <ellipse cx="24" cy="90" rx="4" ry="3" fill="#1e1b4b"/>
+  <ellipse cx="46" cy="90" rx="4" ry="3" fill="#1e1b4b"/>
+
+  <!-- Dark aura -->
+  <circle cx="35" cy="50" r="32" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0.2">
+    <animate attributeName="r" values="30;35;30" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>
