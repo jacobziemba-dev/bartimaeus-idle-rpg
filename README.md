@@ -23,18 +23,31 @@ A simplified AFK Arena-style idle RPG game with auto-battling heroes, idle resou
 
 ## 🌐 Deploy to GitHub Pages
 
-This repository includes a GitHub Actions workflow that **automatically deploys** to GitHub Pages when you push to the `main` branch!
+The game uses Vite for building and can be deployed to GitHub Pages. You'll need to build the project and deploy the `dist` folder.
 
 ### Quick Setup (One-Time)
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Source", select **GitHub Actions**
-4. Click **Save**
+1. Build the project locally:
+   ```bash
+   npm ci
+   npm run build
+   ```
+2. Deploy using gh-pages (easiest method):
+   ```bash
+   npm install -D gh-pages
+   npx gh-pages -d dist
+   ```
+3. Go to your repository on GitHub
+4. Click **Settings** → **Pages**
+5. Under "Source", select **Deploy from a branch**
+6. Under "Branch", select **gh-pages** and **/ (root)**
+7. Click **Save**
 
-That's it! Your game will automatically deploy when you push changes to the `main` branch.
+Your game will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME`
 
-### Manual Deployment Steps (if starting from scratch)
+Alternatively, you can commit the `dist` folder to your main branch (remove it from .gitignore first) and deploy from **/dist** instead.
+
+### Setup Steps
 
 #### Step 1: Create GitHub Repository
 
@@ -48,29 +61,48 @@ git commit -m "Initial commit: Bartimaeus Idle RPG"
 #### Step 2: Push to GitHub
 
 ```bash
-# Create a new repository on GitHub (name it "bartimaeus-idle-rpg")
+# Create a new repository on GitHub
 # Then run:
-git remote add origin https://github.com/YOUR_USERNAME/bartimaeus-idle-rpg.git
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
 git branch -M main
 git push -u origin main
 ```
 
-#### Step 3: Configure GitHub Pages
+#### Step 3: Build and Configure GitHub Pages
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Source", select **GitHub Actions**
-4. The workflow will run automatically and deploy your site
-5. Wait 1-2 minutes for the deployment to complete
-6. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
-
-### Manual Deployment Trigger
-
-You can also manually trigger a deployment:
-1. Go to **Actions** tab in your repository
-2. Click on "Deploy to GitHub Pages" workflow
-3. Click **Run workflow** button
-4. Select the `main` branch and click **Run workflow**
+1. Build the project:
+   ```bash
+   npm ci
+   npm run build
+   ```
+2. The `dist` folder is gitignored by default. You have two options:
+   
+   **Option A**: Remove dist from .gitignore and commit it:
+   ```bash
+   # Remove 'dist/' line from .gitignore, then:
+   git add dist
+   git commit -m "Add build output"
+   git push
+   ```
+   
+   **Option B**: Use gh-pages branch (recommended):
+   ```bash
+   # Install gh-pages package
+   npm install -D gh-pages
+   
+   # Deploy dist folder to gh-pages branch
+   npx gh-pages -d dist
+   ```
+   
+3. Go to your repository on GitHub
+4. Click **Settings** → **Pages**
+5. Under "Source", select **Deploy from a branch**
+6. Under "Branch", select:
+   - **main** and **/dist** if using Option A
+   - **gh-pages** and **/ (root)** if using Option B
+7. Click **Save**
+8. Wait 1-2 minutes for the deployment to complete
+9. Your game will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME`
 
 ## 📁 Project Structure
 
