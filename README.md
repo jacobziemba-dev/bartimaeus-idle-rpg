@@ -43,7 +43,7 @@ The game uses Vite for building and can be deployed to GitHub Pages. You'll need
 6. Under "Branch", select **gh-pages** and **/ (root)**
 7. Click **Save**
 
-Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
+Your game will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME`
 
 Alternatively, you can commit the `dist` folder to your main branch (remove it from .gitignore first) and deploy from **/dist** instead.
 
@@ -61,9 +61,9 @@ git commit -m "Initial commit: Bartimaeus Idle RPG"
 #### Step 2: Push to GitHub
 
 ```bash
-# Create a new repository on GitHub (name it "bartimaeus-idle-rpg")
+# Create a new repository on GitHub
 # Then run:
-git remote add origin https://github.com/YOUR_USERNAME/bartimaeus-idle-rpg.git
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
 git branch -M main
 git push -u origin main
 ```
@@ -102,7 +102,7 @@ git push -u origin main
    - **gh-pages** and **/ (root)** if using Option B
 7. Click **Save**
 8. Wait 1-2 minutes for the deployment to complete
-9. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
+9. Your game will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME`
 
 ## 📁 Project Structure
 
