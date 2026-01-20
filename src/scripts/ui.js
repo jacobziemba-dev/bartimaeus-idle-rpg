@@ -46,15 +46,21 @@ class UIManager {
    * Resize the canvas backing store to match its CSS size and device pixel ratio
    */
   resizeCanvas() {
+    const baseWidth = 800;
+    const baseHeight = 400;
+    const heroXRatio = 0.125;
+    const enemyXRatio = 0.75;
+    const yPositionRatios = [0.25, 0.5, 0.75];
+
     // Get the CSS size of the canvas (fallback to attributes if not styled)
     const cssWidth =
       this.canvas.clientWidth ||
       parseInt(this.canvas.getAttribute('width')) ||
-      800;
+      baseWidth;
     const cssHeight =
       this.canvas.clientHeight ||
       parseInt(this.canvas.getAttribute('height')) ||
-      400;
+      baseHeight;
 
     // Set the canvas width/height in device pixels
     this.canvas.width = Math.round(cssWidth * this.dpr);
@@ -72,7 +78,7 @@ class UIManager {
     this.height = cssHeight;
 
     // Responsive layout scaling for cross-platform sizing
-    const scale = Math.min(this.width / 800, this.height / 400, 1);
+    const scale = Math.min(this.width / baseWidth, this.height / baseHeight, 1);
     this.characterSize = Math.max(40, Math.round(60 * scale));
     this.healthBarWidth = Math.max(50, Math.round(70 * scale));
     this.healthBarHeight = Math.max(6, Math.round(8 * scale));
@@ -80,12 +86,15 @@ class UIManager {
     this.damageFontSize = Math.max(14, Math.round(24 * scale));
     this.resultFontSize = Math.max(32, Math.round(72 * scale));
 
-    this.heroStartX = Math.max(this.characterSize, Math.round(this.width * 0.125));
+    this.heroStartX = Math.max(
+      this.characterSize,
+      Math.round(this.width * heroXRatio)
+    );
     this.enemyStartX = Math.min(
       this.width - this.characterSize,
-      Math.round(this.width * 0.75)
+      Math.round(this.width * enemyXRatio)
     );
-    this.yPositions = [0.25, 0.5, 0.75].map(ratio =>
+    this.yPositions = yPositionRatios.map(ratio =>
       Math.round(this.height * ratio)
     );
   }
@@ -231,11 +240,12 @@ class UIManager {
     if (!isAlive) {
       this.ctx.strokeStyle = '#ff0000';
       this.ctx.lineWidth = 4;
+      const crossOffset = Math.round(size * 0.33);
       this.ctx.beginPath();
-      this.ctx.moveTo(x - 20, y - 20);
-      this.ctx.lineTo(x + 20, y + 20);
-      this.ctx.moveTo(x + 20, y - 20);
-      this.ctx.lineTo(x - 20, y + 20);
+      this.ctx.moveTo(x - crossOffset, y - crossOffset);
+      this.ctx.lineTo(x + crossOffset, y + crossOffset);
+      this.ctx.moveTo(x + crossOffset, y - crossOffset);
+      this.ctx.lineTo(x - crossOffset, y + crossOffset);
       this.ctx.stroke();
     }
   }
