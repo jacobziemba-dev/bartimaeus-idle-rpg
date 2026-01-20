@@ -119,11 +119,14 @@ class Game {
      */
     setupEventListeners() {
         // Pause button
-        document.getElementById('pause-btn').addEventListener('click', () => {
-            this.battleManager.togglePause();
-            const isPaused = this.battleManager.getPauseState();
-            document.getElementById('pause-btn').textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
-        });
+        const pauseBtn = document.getElementById('pause-btn');
+        if (pauseBtn) {
+            pauseBtn.addEventListener('click', () => {
+                this.battleManager.togglePause();
+                const isPaused = this.battleManager.getPauseState();
+                pauseBtn.textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
+            });
+        }
 
         // Challenge Stage button
         // Note: The UI element ID 'next-stage-btn' is reused/renamed in UI later
@@ -137,25 +140,37 @@ class Game {
         }
 
         // Upgrade Heroes button
-        document.getElementById('upgrade-btn').addEventListener('click', () => {
-            this.openUpgradeModal();
-        });
+        const upgradeBtn = document.getElementById('upgrade-btn') || document.getElementById('upgrade-stats-btn');
+        if (upgradeBtn) {
+            upgradeBtn.addEventListener('click', () => {
+                this.upgradeHero();
+            });
+        }
 
         // Close upgrade modal
-        document.getElementById('close-upgrade').addEventListener('click', () => {
-            this.closeUpgradeModal();
-        });
+        const closeUpgradeBtn = document.getElementById('close-upgrade');
+        if (closeUpgradeBtn) {
+            closeUpgradeBtn.addEventListener('click', () => {
+                this.closeUpgradeModal();
+            });
+        }
 
         // AFK Rewards button (manual check)
-        document.getElementById('afk-rewards-btn').addEventListener('click', () => {
-            // For now, just show current passive income info
-            alert(`Passive Income:\n💰 ${this.resourceManager.goldPerSecond}/sec\n💎 ${this.resourceManager.gemsPerSecond.toFixed(1)}/sec`);
-        });
+        const afkRewardsBtn = document.getElementById('afk-rewards-btn');
+        if (afkRewardsBtn) {
+            afkRewardsBtn.addEventListener('click', () => {
+                // For now, just show current passive income info
+                alert(`Passive Income:\n💰 ${this.resourceManager.goldPerSecond}/sec\n💎 ${this.resourceManager.gemsPerSecond.toFixed(1)}/sec`);
+            });
+        }
 
         // Close AFK modal
-        document.getElementById('close-afk').addEventListener('click', () => {
-            this.uiManager.hideAFKRewards();
-        });
+        const closeAfkBtn = document.getElementById('close-afk');
+        if (closeAfkBtn) {
+            closeAfkBtn.addEventListener('click', () => {
+                this.uiManager.hideAFKRewards();
+            });
+        }
 
         // Speed control buttons (1x, 2x, 4x)
         const speedButtons = document.querySelectorAll('#speed-controls .speed-btn');
