@@ -15,7 +15,7 @@ This document provides a comprehensive analysis of the current branch situation 
 - **Action**: Close PR #20 as obsolete/superseded
 
 #### PR #18: "Claude/start phase 2 s6 nvk"
-- **Status**: Open, mergeable_state: unknown
+- **Status**: Open (GitHub reports mergeable_state: unknown - requires manual merge conflict check)
 - **Changes**: Major TypeScript migration (1,630 additions, 1,210 deletions across 19 files)
 - **Impact**: Converts all `.js` files to `.ts` and adds type definitions
 - **Recommendation**: **NEEDS REVIEW** - This is a significant architectural change that should be:
@@ -37,7 +37,7 @@ Based on GitHub API data, the following branches exist:
 | `claude/start-phase-2-S6Nvk` | PR #18 source | Keep until PR decision |
 | `claude/add-claude-documentation-S0dJ7` | Merged in PR #13 | **DELETE** |
 | `claude/add-claude-documentation-lMykC` | Merged in PR #9 | **DELETE** |
-| `claude/vite-typescript-migration-S0dJ7` | Appears superseded | Review and likely **DELETE** |
+| `claude/vite-typescript-migration-S0dJ7` | Superseded by PR #14 | **DELETE** |
 | `copilot/add-game-assets` | Merged in PR #7 | **DELETE** |
 | `copilot/clean-up-project-structure` | Merged in PR #8 | **DELETE** |
 | `copilot/publish-website-free` | Merged in PR #6 | **DELETE** |
