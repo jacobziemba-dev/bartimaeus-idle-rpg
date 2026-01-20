@@ -31,15 +31,6 @@ class UIManager {
       window.addEventListener('resize', () => this.resizeCanvas());
     }
 
-    // Character display settings
-    this.characterSize = 60; // Size of character rectangles
-    this.healthBarWidth = 70;
-    this.healthBarHeight = 8;
-
-    // Position settings
-    this.heroStartX = 100;
-    this.enemyStartX = 600;
-    this.yPositions = [100, 200, 300]; // Y positions for 3 characters
   }
 
   /**
