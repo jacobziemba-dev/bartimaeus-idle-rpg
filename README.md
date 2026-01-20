@@ -32,17 +32,20 @@ The game uses Vite for building and can be deployed to GitHub Pages. You'll need
    npm ci
    npm run build
    ```
-2. Go to your repository on GitHub
-3. Click **Settings** → **Pages**
-4. Under "Source", select **Deploy from a branch**
-5. Under "Branch", select **main** and **/dist** (or deploy dist folder separately)
-6. Click **Save**
+2. Deploy using gh-pages (easiest method):
+   ```bash
+   npm install -D gh-pages
+   npx gh-pages -d dist
+   ```
+3. Go to your repository on GitHub
+4. Click **Settings** → **Pages**
+5. Under "Source", select **Deploy from a branch**
+6. Under "Branch", select **gh-pages** and **/ (root)**
+7. Click **Save**
 
-Note: Since GitHub Pages needs the built files from the `dist` folder, you'll need to either:
-- Commit the `dist` folder to your repository after building, OR
-- Use a separate gh-pages branch with only the dist contents
+Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
 
-That's it! Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
+Alternatively, you can commit the `dist` folder to your main branch (remove it from .gitignore first) and deploy from **/dist** instead.
 
 ### Setup Steps
 
@@ -72,16 +75,31 @@ git push -u origin main
    npm ci
    npm run build
    ```
-2. Commit the dist folder (if not already in .gitignore):
+2. The `dist` folder is gitignored by default. You have two options:
+   
+   **Option A**: Remove dist from .gitignore and commit it:
    ```bash
+   # Remove 'dist/' line from .gitignore, then:
    git add dist
    git commit -m "Add build output"
    git push
    ```
+   
+   **Option B**: Use gh-pages branch (recommended):
+   ```bash
+   # Install gh-pages package
+   npm install -D gh-pages
+   
+   # Deploy dist folder to gh-pages branch
+   npx gh-pages -d dist
+   ```
+   
 3. Go to your repository on GitHub
 4. Click **Settings** → **Pages**
 5. Under "Source", select **Deploy from a branch**
-6. Under "Branch", select **main** and **/dist**
+6. Under "Branch", select:
+   - **main** and **/dist** if using Option A
+   - **gh-pages** and **/ (root)** if using Option B
 7. Click **Save**
 8. Wait 1-2 minutes for the deployment to complete
 9. Your game will be live at: `https://YOUR_USERNAME.github.io/bartimaeus-idle-rpg`
