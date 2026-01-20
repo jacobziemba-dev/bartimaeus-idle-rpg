@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bartimaeus Idle RPG</title>
     <link rel="icon" type="image/svg+xml" href="favicon.ico.svg" />
-    <link rel="stylesheet" href="src/styles/main.css" />
-    <link rel="stylesheet" href="src/styles/battle.css" />
   </head>
   <body>
     <!-- Loading Screen -->
@@ -133,27 +131,7 @@
       </div>
     </div>
 
-    <!-- Include all game scripts in dependency order -->
-    <!-- Order matters! Classes must be defined before they're used -->
-
-    <!-- Core Systems -->
-    <script src="src/scripts/assetManager.js"></script>
-
-    <!-- Game Data -->
-    <script src="src/scripts/hero.js"></script>
-    <script src="src/scripts/enemy.js"></script>
-
-    <!-- Game Systems -->
-    <script src="src/scripts/skills.js"></script>
-    <script src="src/scripts/adventureLog.js"></script>
-    <script src="src/scripts/resources.js"></script>
-    <script src="src/scripts/storage.js"></script>
-
-    <!-- Managers -->
-    <script src="src/scripts/battle.js"></script>
-    <script src="src/scripts/ui.js"></script>
-
-    <!-- Main Controller -->
-    <script src="src/scripts/game.js"></script>
+    <!-- Vite Entry Point -->
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
