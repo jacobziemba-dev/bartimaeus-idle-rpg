@@ -70,6 +70,24 @@ class UIManager {
     // Store logical drawing size in CSS pixels for the rest of the UI code
     this.width = cssWidth;
     this.height = cssHeight;
+
+    // Responsive layout scaling for cross-platform sizing
+    const scale = Math.min(this.width / 800, this.height / 400, 1);
+    this.characterSize = Math.max(40, Math.round(60 * scale));
+    this.healthBarWidth = Math.max(50, Math.round(70 * scale));
+    this.healthBarHeight = Math.max(6, Math.round(8 * scale));
+    this.labelFontSize = Math.max(12, Math.round(14 * scale));
+    this.damageFontSize = Math.max(14, Math.round(24 * scale));
+    this.resultFontSize = Math.max(32, Math.round(72 * scale));
+
+    this.heroStartX = Math.max(this.characterSize, Math.round(this.width * 0.125));
+    this.enemyStartX = Math.min(
+      this.width - this.characterSize,
+      Math.round(this.width * 0.75)
+    );
+    this.yPositions = [0.25, 0.5, 0.75].map(ratio =>
+      Math.round(this.height * ratio)
+    );
   }
 
   /**
@@ -261,7 +279,7 @@ class UIManager {
    */
   drawLabel(x, y, text, color) {
     this.ctx.fillStyle = color;
-    this.ctx.font = 'bold 14px Arial';
+    this.ctx.font = `bold ${this.labelFontSize || 14}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.fillText(text, x, y);
   }
@@ -281,7 +299,7 @@ class UIManager {
 
       // Draw damage text
       this.ctx.fillStyle = color;
-      this.ctx.font = 'bold 24px Arial';
+      this.ctx.font = `bold ${this.damageFontSize || 24}px Arial`;
       this.ctx.textAlign = 'center';
       this.ctx.fillText(`-${num.damage}`, num.x, num.y);
 
@@ -308,7 +326,7 @@ class UIManager {
     this.ctx.shadowBlur = 30;
     this.ctx.shadowColor = color;
     this.ctx.fillStyle = color;
-    this.ctx.font = 'bold 72px Arial';
+    this.ctx.font = `bold ${this.resultFontSize || 72}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.fillText(text, this.width / 2, this.height / 2);
 

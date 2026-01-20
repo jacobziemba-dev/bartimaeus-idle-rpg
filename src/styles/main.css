@@ -76,6 +76,7 @@ body {
   display: grid;
   grid-template-columns: 280px 1fr 320px;
   grid-template-rows: 100vh;
+  min-height: 100vh;
   max-width: 100%;
   margin: 0 auto;
   gap: 0;
@@ -693,6 +694,10 @@ body {
 }
 
 @media (max-width: 1024px) {
+  body {
+    overflow-y: auto;
+  }
+
   #game-wrapper {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
