@@ -77,18 +77,23 @@ You can also manually trigger a deployment:
 ```
 bartimaeus-idle-rpg/
 ├── index.html              # Main HTML file
-├── styles/
-│   ├── main.css           # Layout and UI styles
-│   └── battle.css         # Battle-specific styles
-├── scripts/
-│   ├── game.js            # Main game controller & game loop
-│   ├── hero.js            # Hero class (your characters)
-│   ├── enemy.js           # Enemy class and generation
-│   ├── battle.js          # Auto-battle logic
-│   ├── resources.js       # Gold/gem management & idle generation
-│   ├── ui.js              # Canvas rendering & UI updates
-│   └── storage.js         # Save/load to LocalStorage
-└── README.md              # This file
+├── src/
+│   ├── styles/
+│   │   ├── main.css       # Layout and UI styles
+│   │   └── battle.css     # Battle-specific styles
+│   └── scripts/
+│       ├── assetManager.js # Asset loader & cache
+│       ├── game.js        # Main game controller & game loop
+│       ├── hero.js        # Hero class (your characters)
+│       ├── enemy.js       # Enemy class and generation
+│       ├── battle.js      # Auto-battle logic
+│       ├── resources.js   # Gold/gem management & idle generation
+│       ├── ui.js          # Canvas rendering & UI updates
+│       └── storage.js     # Save/load to LocalStorage
+├── assets/                 # Sprites and images
+├── docs/                   # Project docs
+├── favicon.ico.svg         # Favicon asset
+└── README.md               # This file
 ```
 
 ## 🎯 Game Features
@@ -139,15 +144,15 @@ The game runs at 60 frames per second using `requestAnimationFrame()`:
 ## 🎨 Customization Ideas
 
 ### Easy Tweaks
-1. **Change hero names**: Edit `scripts/hero.js` → `createStartingHeroes()`
-2. **Adjust battle speed**: Change `attackInterval` in `scripts/battle.js`
-3. **Modify starting resources**: Edit `ResourceManager` constructor in `scripts/resources.js`
-4. **Change colors**: Edit CSS in `styles/main.css`
+1. **Change hero names**: Edit `src/scripts/hero.js` → `createStartingHeroes()`
+2. **Adjust battle speed**: Change `attackInterval` in `src/scripts/battle.js`
+3. **Modify starting resources**: Edit `ResourceManager` constructor in `src/scripts/resources.js`
+4. **Change colors**: Edit CSS in `src/styles/main.css`
 
 ### Medium Difficulty
 1. **Add more heroes**: Create new heroes in `createStartingHeroes()`
-2. **New enemy types**: Add to `createEnemiesForStage()` in `scripts/enemy.js`
-3. **Change upgrade formula**: Modify `getUpgradeCost()` in `scripts/hero.js`
+2. **New enemy types**: Add to `createEnemiesForStage()` in `src/scripts/enemy.js`
+3. **Change upgrade formula**: Modify `getUpgradeCost()` in `src/scripts/hero.js`
 4. **Add sound effects**: Use Web Audio API or HTML5 `<audio>` tags
 
 ## 🐛 Debugging
