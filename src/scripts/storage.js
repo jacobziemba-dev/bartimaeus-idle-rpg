@@ -95,7 +95,7 @@ class StorageManager {
 /**
  * Create a game state object that can be saved
  *
- * @param {Array<Hero>} heroes - Player's heroes
+ * @param {Hero|Array<Hero>} heroes - Player's hero(es)
  * @param {ResourceManager} resources - Resource manager
  * @param {number} currentStage - Current stage number
  * @returns {object} Complete game state
@@ -105,7 +105,8 @@ function createSaveState(heroes, resources, currentStage) {
         version: '1.0', // Save file version (for future compatibility)
         lastSaveTime: Date.now(),
         currentStage: currentStage,
-        heroes: heroes.map(hero => hero.toJSON()),
+        // Handle single hero or array for backward compatibility
+        heroes: heroes ? (Array.isArray(heroes) ? heroes.map(hero => hero.toJSON()) : [heroes.toJSON()]) : [],
         resources: resources.toJSON()
     };
 }
@@ -114,16 +115,17 @@ function createSaveState(heroes, resources, currentStage) {
  * Load heroes from saved state
  *
  * @param {object} saveState - Saved game state
- * @returns {Array<Hero>} Reconstructed heroes
+ * @returns {Hero} Reconstructed hero (single hero in horde mode)
  */
 function loadHeroesFromSave(saveState) {
-    if (!saveState || !saveState.heroes) {
-        // No save data, return starting heroes
+    if (!saveState || !saveState.heroes || saveState.heroes.length === 0) {
+        // No save data, return starting hero
         return createStartingHeroes();
     }
 
-    // Reconstruct heroes from saved data
-    return saveState.heroes.map(heroData => Hero.fromJSON(heroData));
+    // Reconstruct hero from saved data (now returns single hero, not array)
+    // Take the first hero from the array for backward compatibility
+    return Hero.fromJSON(saveState.heroes[0]);
 }
 
 /**

@@ -123,12 +123,17 @@ class UIManager {
   }
 
   /**
-   * Draw all heroes
+   * Draw hero (single hero in horde mode)
    *
-   * @param {Array<Hero>} heroes - Heroes to draw
+   * @param {Hero|Array<Hero>} heroes - Hero or array of heroes to draw
    */
   drawHeroes(heroes) {
-    heroes.forEach((hero, index) => {
+    // Handle single hero or array for backward compatibility
+    const heroArray = Array.isArray(heroes) ? heroes : [heroes];
+
+    heroArray.forEach((hero, index) => {
+      if (!hero) return; // Skip if hero is null/undefined
+
       const x = this.heroStartX;
       const y = this.yPositions[index];
 

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Simple sword and shield favicon -->
+  <rect width="32" height="32" fill="#1e40af"/>
+
+  <!-- Shield -->
+  <path d="M 10 8 L 10 18 Q 10 22 14 24 Q 10 22 10 18 Z" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+  <ellipse cx="12" cy="14" rx="4" ry="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+
+  <!-- Sword -->
+  <line x1="20" y1="8" x2="20" y2="22" stroke="#e5e7eb" stroke-width="2"/>
+  <rect x="18" y="22" width="4" height="2" fill="#78350f"/>
+  <line x1="17" y1="10" x2="23" y2="10" stroke="#e5e7eb" stroke-width="1.5"/>
+
+  <!-- Border -->
+  <rect width="32" height="32" fill="none" stroke="#60a5fa" stroke-width="1"/>
+</svg>

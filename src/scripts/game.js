@@ -12,13 +12,14 @@
 class Game {
     constructor() {
         // Initialize all managers
+        this.assetManager = new AssetManager();
         this.battleManager = new BattleManager();
         this.resourceManager = new ResourceManager();
         this.storageManager = new StorageManager();
         this.uiManager = new UIManager('battle-canvas');
 
         // Game state
-        this.heroes = [];
+        this.heroes = null; // Single hero in horde mode
         this.currentStage = 1;
         this.isRunning = false;
 
@@ -30,8 +31,25 @@ class Game {
         // Game speed multiplier (1 = normal, 2 = double, 4 = quad)
         this.speedMultiplier = 1;
 
-        // Initialize game
-        this.init();
+        // Don't initialize immediately - wait for assets to load
+        this.loadAssets();
+    }
+
+    /**
+     * Load all game assets before starting
+     */
+    async loadAssets() {
+        try {
+            // Load all assets
+            await this.assetManager.loadAll();
+
+            // Assets loaded, now initialize game
+            this.init();
+        } catch (error) {
+            console.error('Failed to load assets:', error);
+            // Start game anyway with fallback rendering
+            this.init();
+        }
     }
 
     /**
@@ -244,11 +262,8 @@ class Game {
         // Update resources (idle generation)
         this.resourceManager.update(deltaTime);
 
-        // Check if battle ended
-        const battleResult = this.battleManager.getBattleResult();
-        if (battleResult) {
-            this.handleBattleEnd(battleResult);
-        }
+        // In horde mode, battles are continuous (no battle end checks)
+        // Hero respawns automatically when defeated
 
         // Auto-save every 30 seconds
         const currentTime = Date.now();
@@ -272,11 +287,7 @@ class Game {
             this.battleManager.getDamageNumbers()
         );
 
-        // Draw battle result if battle ended
-        const battleResult = this.battleManager.getBattleResult();
-        if (battleResult) {
-            this.uiManager.drawBattleResult(battleResult);
-        }
+        // In horde mode, battles are continuous (no battle result screen)
     }
 
     /**
@@ -289,9 +300,8 @@ class Game {
             this.currentStage
         );
 
-        this.uiManager.updateBattleControls(
-            this.battleManager.getBattleResult()
-        );
+        // In horde mode, we're always in IDLE mode (no boss fights yet)
+        this.uiManager.updateBattleControls(null, 'IDLE');
     }
 
     /**
@@ -364,12 +374,12 @@ class Game {
     }
 
     /**
-     * Upgrade a specific hero
+     * Upgrade the hero
      *
-     * @param {number} heroId - ID of hero to upgrade
+     * @param {number} heroId - ID of hero to upgrade (optional, kept for compatibility)
      */
     upgradeHero(heroId) {
-        const hero = this.heroes.find(h => h.id === heroId);
+        const hero = this.heroes;
 
         if (!hero) {
             console.error('Hero not found!');
@@ -383,12 +393,7 @@ class Game {
             hero.upgrade();
             console.log(`${hero.name} upgraded to level ${hero.level}!`);
 
-            // Update modal to show new stats
-            this.uiManager.updateUpgradeModal(this.heroes, (heroId) => {
-                this.upgradeHero(heroId);
-            });
-
-            // Update resource display
+            // Update UI to show new stats
             this.updateUI();
 
             // Save game
