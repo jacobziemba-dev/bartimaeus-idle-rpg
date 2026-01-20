@@ -10,37 +10,39 @@ class AssetManager {
     this.loadingProgress = 0;
 
     // Asset manifest - maps category -> name -> file path
+    // Use relative paths so they work with Vite's base configuration
+    const basePath = import.meta.env.BASE_URL || '/';
     this.manifest = {
       backgrounds: {
-        forest: 'assets/backgrounds/forest.svg',
-        dungeon: 'assets/backgrounds/dungeon.svg',
-        volcano: 'assets/backgrounds/volcano.svg',
-        castle: 'assets/backgrounds/castle.svg'
+        forest: `${basePath}backgrounds/forest.svg`,
+        dungeon: `${basePath}backgrounds/dungeon.svg`,
+        volcano: `${basePath}backgrounds/volcano.svg`,
+        castle: `${basePath}backgrounds/castle.svg`
       },
       heroes: {
-        bartimaeus: 'assets/heroes/bartimaeus.svg'
+        bartimaeus: `${basePath}heroes/bartimaeus.svg`
       },
       enemies: {
-        goblin: 'assets/enemies/goblin.svg',
-        orc: 'assets/enemies/orc.svg',
-        skeleton: 'assets/enemies/skeleton.svg',
-        demon: 'assets/enemies/demon.svg',
-        dragon: 'assets/enemies/dragon.svg'
+        goblin: `${basePath}enemies/goblin.svg`,
+        orc: `${basePath}enemies/orc.svg`,
+        skeleton: `${basePath}enemies/skeleton.svg`,
+        demon: `${basePath}enemies/demon.svg`,
+        dragon: `${basePath}enemies/dragon.svg`
       },
       ui: {
         // Skill icons
-        skill_fireball: 'assets/ui/fireball-icon.svg',
-        skill_cleave: 'assets/ui/cleave-icon.svg',
-        skill_heal: 'assets/ui/heal-icon.svg',
+        skill_fireball: `${basePath}ui/fireball-icon.svg`,
+        skill_cleave: `${basePath}ui/cleave-icon.svg`,
+        skill_heal: `${basePath}ui/heal-icon.svg`,
 
         // UI elements
-        button_upgrade: 'assets/ui/button-upgrade.svg',
-        panel_frame: 'assets/ui/panel-frame.svg',
-        healthbar_bg: 'assets/ui/healthbar-background.svg',
-        healthbar_fill_green: 'assets/ui/healthbar-fill-green.svg',
-        healthbar_fill_red: 'assets/ui/healthbar-fill-red.svg',
-        gold_coin: 'assets/ui/gold-coin.svg',
-        gem_icon: 'assets/ui/gem-icon.svg'
+        button_upgrade: `${basePath}ui/button-upgrade.svg`,
+        panel_frame: `${basePath}ui/panel-frame.svg`,
+        healthbar_bg: `${basePath}ui/healthbar-background.svg`,
+        healthbar_fill_green: `${basePath}ui/healthbar-fill-green.svg`,
+        healthbar_fill_red: `${basePath}ui/healthbar-fill-red.svg`,
+        gold_coin: `${basePath}ui/gold-coin.svg`,
+        gem_icon: `${basePath}ui/gem-icon.svg`
       }
     };
   }
