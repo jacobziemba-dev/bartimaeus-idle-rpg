@@ -2,6 +2,39 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Last Updated:** January 2026
+**Project Status:** Production-ready with active development
+**Current Version:** 1.0 (with mobile responsiveness)
+
+## Recent Updates
+- **Jan 20, 2026:** Mobile canvas responsiveness added (PR #12) - scaled layout metrics for mobile devices
+- **Jan 19, 2026:** Comprehensive technical analysis document added (Research-RPG.md)
+- **Jan 19, 2026:** UI assets redesigned and organized (PR #10)
+- **Jan 18, 2026:** Initial CLAUDE.md documentation created
+
+## Project Overview
+
+**Bartimaeus Idle RPG** is a vanilla JavaScript HTML5 Canvas game inspired by AFK Arena mechanics. The game features auto-battling heroes, idle resource generation, and progressive difficulty scaling.
+
+**Technology Stack:**
+- Pure vanilla JavaScript (ES6+)
+- HTML5 Canvas API for rendering
+- LocalStorage for save persistence
+- CSS3 for UI styling
+- SVG assets for graphics
+- GitHub Actions for CI/CD
+
+**Key Features:**
+- ✅ Horde mode combat (1 hero vs 3-5 enemies)
+- ✅ Idle resource generation with AFK rewards (2-hour cap)
+- ✅ Hero upgrade system with level-based stat scaling
+- ✅ Skills system (Fireball, Cleave, Heal)
+- ✅ Auto-save every 30 seconds
+- ✅ Adventure log with timestamped events
+- ✅ Mobile-responsive canvas layout
+- ✅ Asset loading system with fallback rendering
+- ✅ Battle speed controls (1x, 2x, 4x)
+
 ## Running the Game
 
 This is a vanilla JavaScript HTML5 Canvas game with **no build step required**.
@@ -104,13 +137,20 @@ Save structure:
 **AFK rewards** are calculated on load by comparing `lastSaveTime` to current time, capped at 2 hours.
 
 ### Canvas Rendering
-The canvas size is responsive. Character positions are calculated dynamically:
-- Heroes: Left side of canvas
-- Enemies: Right side of canvas
+The canvas size is **fully responsive** with mobile support (PR #12, Jan 2026):
+- **Desktop:** 800×400px canvas with standard metrics
+- **Mobile:** Scaled layout with proportional positioning
+- Character positions calculated dynamically based on canvas width/height ratios
+- Font sizes and element scaling adjust for screen size
+- Heroes positioned on left side of canvas
+- Enemies positioned on right side of canvas
 - Damage numbers float upward with animation
 - Background images loaded from `AssetManager`
 
 Battle results (victory/defeat) are drawn as canvas overlays with dedicated rendering methods.
+
+**Responsive Implementation:**
+Character positioning uses canvas-relative ratios rather than fixed pixel values, ensuring proper layout on all screen sizes. See [ui.js](../src/scripts/ui.js) for scaled layout metrics.
 
 ## Core Systems
 
@@ -230,13 +270,13 @@ Battle supports 1x, 2x, and 4x speed multipliers via UI buttons:
 ## Asset Management
 
 ### Asset Organization
-**Total Assets:** 28 SVG files organized by category in `/assets/`:
+**Total Assets:** 29 SVG files organized by category in `/assets/`:
 
 **Backgrounds (4):** `forest.svg`, `dungeon.svg`, `volcano.svg`, `castle.svg`
-**Heroes (7):** `bartimaeus.svg`, `bartimaeus-alt.svg`, `mage.svg`, `archer.svg`, plus 3 downloaded from GDQuest
+**Heroes (8):** `bartimaeus.svg`, `bartimaeus-alt.svg`, `mage.svg`, `archer.svg`, plus 4 downloaded from GDQuest (hero-blue, hero-green, hero-grey, shadow)
 **Enemies (5):** `goblin.svg`, `orc.svg`, `skeleton.svg`, `demon.svg`, `dragon.svg`
-**UI Elements (10):** Skill icons, health bars, buttons, resource icons
-**Downloaded (4):** From GDQuest (CC0 licensed)
+**UI Elements (10):** Skill icons, health bars, buttons, resource icons (fireball-icon, cleave-icon, heal-icon, gold-coin, gem-icon, healthbars, panel-frame, button-upgrade)
+**Downloaded (4):** From GDQuest (CC0 licensed) - 3 hero variants + shadow overlay
 
 ### Adding New Assets
 1. Add SVG file to appropriate `/assets/` subdirectory
@@ -315,18 +355,33 @@ Control visibility via `style.display = 'flex'` (show) or `'none'` (hide).
 - [README.md](../README.md) - User-facing documentation, how to play, deployment
 - [CLAUDE.md](CLAUDE.md) - This file, AI assistant guidance
 - [CREDITS.md](../CREDITS.md) - Asset attribution and licenses
+- [Research-RPG.md](../Research-RPG.md) - Comprehensive 33KB technical analysis of Idle RPG architecture, AFK Arena mechanics, and exponential progression mathematics
+- [AFK_ARENA_TECH_STACK.md](../AFK_ARENA_TECH_STACK.md) - Research notes on AFK Arena game mechanics
 - [SPRITE_INTEGRATION_GUIDE.md](SPRITE_INTEGRATION_GUIDE.md) - How to add sprites
 - [SPRITE_RESOURCES.md](SPRITE_RESOURCES.md) - Free sprite websites
 - [DOWNLOADED_ASSETS.md](DOWNLOADED_ASSETS.md) - Downloaded asset summary
-- [ROADMAP.md](ROADMAP.md) - Future development plans
+- [ROADMAP.md](ROADMAP.md) - Step-by-step development roadmap (12 steps)
 - [ASSET_GUIDE.md](../assets/ASSET_GUIDE.md) - Asset organization guide
 
 ### Code Statistics
-- **JavaScript:** ~2,728 lines across 10 files
-- **CSS:** ~838 lines across 2 files
-- **HTML:** 160 lines (single file)
-- **Assets:** 28 SVG files
-- **No build step required** - Pure vanilla JS
+- **JavaScript:** ~2,748 lines across 10 files
+  - `game.js`: 470 lines (main controller)
+  - `ui.js`: 454 lines (canvas rendering)
+  - `battle.js`: 352 lines (combat system)
+  - `skills.js`: 293 lines (abilities)
+  - `hero.js`: 242 lines (hero system)
+  - `assetManager.js`: 210 lines (asset loading)
+  - `resources.js`: 210 lines (gold/gems)
+  - `adventureLog.js`: 187 lines (event feed)
+  - `enemy.js`: 176 lines (enemy creation)
+  - `storage.js`: 154 lines (save/load)
+- **CSS:** ~843 lines across 2 files
+  - `main.css`: 749 lines (layout, colors, animations)
+  - `battle.css`: 94 lines (battle overlays)
+- **HTML:** 160 lines (single file: `index.html`)
+- **Assets:** 29 SVG files
+- **Documentation:** 5 files in `/docs/` (~56KB)
+- **No build step required** - Pure vanilla JavaScript
 
 ## Development Workflow
 
@@ -345,10 +400,43 @@ Control visibility via `style.display = 'flex'` (show) or `'none'` (hide).
 
 ### Code Style
 - **Formatter:** Prettier configured in `.prettierrc`
-- **Quotes:** Single quotes
-- **Semicolons:** Required
+- **Quotes:** Single quotes (`'`)
+- **Semicolons:** Required (`;`)
 - **Tab Width:** 2 spaces
 - **Line Width:** 80 characters
+- **Trailing Commas:** ES5 style
+- **Arrow Parens:** Avoid when possible (`x => x` not `(x) => x`)
+
+**Prettier Configuration (`.prettierrc`):**
+```json
+{
+  "singleQuote": true,
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "trailingComma": "es5",
+  "arrowParens": "avoid"
+}
+```
+
+### VS Code Configuration
+The project includes VS Code settings in `.vscode/` for optimal development experience:
+
+**Recommended Extensions (`.vscode/extensions.json`):**
+1. `ritwickdey.liveserver` - Live Server for instant browser refresh
+2. `esbenp.prettier-vscode` - Code formatting
+3. `dbaeumer.vscode-eslint` - JavaScript linting
+4. `formulahendry.auto-close-tag` - HTML tag auto-completion
+5. `pranaygp.vscode-css-peek` - CSS utilities
+6. `pkief.material-icon-theme` - File icon theme
+
+**Editor Settings (`.vscode/settings.json`):**
+- **Auto-format on save:** Enabled with Prettier
+- **Auto-save:** Every 1 second after changes
+- **Bracket pair colorization:** Enabled
+- **Live Server:** Configured to use Chrome browser
+- **Auto-imports:** Enabled for JavaScript
+- **Indentation:** 2 spaces (enforced)
 
 ## Troubleshooting
 
@@ -382,7 +470,7 @@ Control visibility via `style.display = 'flex'` (show) or `'none'` (hide).
 
 4. **Horde Mode Only:** Despite code supporting multiple modes, game currently runs in horde mode exclusively (1 hero vs waves).
 
-5. **Skills Not Integrated:** Skill system exists but is not fully wired into battle loop. UI buttons present but non-functional.
+5. **Skills Partially Integrated:** Skill system exists and is defined in skills.js. Skills have proper cooldown management but may need additional battle loop integration for full functionality.
 
 6. **LocalStorage Only:** No backend or database. All saves are browser LocalStorage. Clearing browser data = lost save.
 
@@ -393,3 +481,113 @@ Control visibility via `style.display = 'flex'` (show) or `'none'` (hide).
 9. **GitHub Actions Deployment:** Pushing to `main` triggers auto-deploy. Test on feature branches first.
 
 10. **Canvas-Based Rendering:** All battle visuals use HTML5 Canvas API, not DOM elements. Damage numbers, characters, backgrounds all drawn to canvas.
+
+11. **Mobile Responsive:** Canvas layout uses ratio-based positioning for mobile compatibility. Test on multiple screen sizes.
+
+12. **Battle Speed Controls:** Game supports 1x, 2x, and 4x speed multipliers affecting attack intervals (not frame rate).
+
+## Quick Reference
+
+### Common Code Patterns
+
+**Adding a new manager:**
+```javascript
+// In the manager file
+class NewManager {
+  constructor() {
+    // Initialize state
+  }
+
+  update(deltaTime) {
+    // Update logic called every frame
+  }
+}
+
+// In game.js
+this.newManager = new NewManager();
+// Call in game loop: this.newManager.update(deltaTime);
+```
+
+**Adding a UI element:**
+```javascript
+// 1. Add HTML in index.html
+<button id="my-button">Click Me</button>
+
+// 2. Add event listener in game.js or ui.js
+document.getElementById('my-button').addEventListener('click', () => {
+  // Handle click
+});
+
+// 3. Style in main.css
+#my-button {
+  background: #6c5ce7;
+  color: white;
+  padding: 10px;
+}
+```
+
+**Adding a new hero stat:**
+```javascript
+// 1. In hero.js constructor
+this.newStat = baseNewStat;
+
+// 2. Add scaling in level-up calculations
+get effectiveNewStat() {
+  return this.baseNewStat * (1 + (this.level - 1) * 0.10);
+}
+
+// 3. Update save/load in storage.js
+// Add to save state and load from save
+```
+
+**Adding canvas rendering:**
+```javascript
+// In ui.js render method
+drawNewElement(ctx) {
+  ctx.save();
+  ctx.fillStyle = '#ff0000';
+  ctx.fillRect(x, y, width, height);
+  // For images:
+  const img = this.game.assetManager.get('category', 'name');
+  if (img) ctx.drawImage(img, x, y, w, h);
+  ctx.restore();
+}
+```
+
+### File Line Number References
+
+When referencing code locations, use this format for better navigation:
+- Game loop: `game.js:252-310`
+- Canvas rendering: `ui.js:39-91`
+- Script loading order: `index.html:140-157`
+- Asset manifest: `assetManager.js:13-45`
+- Save system: `storage.js:20-80`
+- Battle logic: `battle.js:150-250`
+
+### Testing Checklist
+
+Before committing changes:
+- [ ] Open `index.html` in browser (or use Live Server)
+- [ ] Check browser console for errors (F12)
+- [ ] Test save/load with `game.storageManager.save()` and reload
+- [ ] Verify mobile layout if UI changes were made
+- [ ] Run through a battle to ensure combat works
+- [ ] Check that auto-save triggers (wait 30 seconds)
+- [ ] Test with `game.speedMultiplier = 4` for faster testing
+
+### Git Workflow Reminder
+
+```bash
+# Always work on feature branches
+git checkout -b claude/feature-name-xxxxx
+
+# Make changes, then stage and commit
+git add .
+git commit -m "Brief description of changes"
+
+# Push to origin with -u flag (CRITICAL: branch must start with 'claude/')
+git push -u origin claude/feature-name-xxxxx
+
+# Create PR when ready (use gh CLI or GitHub web UI)
+gh pr create --title "Feature: Description" --body "Details..."
+```
